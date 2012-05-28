@@ -1,4 +1,4 @@
-#include "C:\Users\Jo\Desktop\GLCD_Jo.h"
+g#include "C:\Users\Jo\Desktop\GLCD_Jo.h"
 const code char truck_bmp[1024];
 sbit DAT at RC5_bit;
 sbit SH_CP at RD2_bit;
