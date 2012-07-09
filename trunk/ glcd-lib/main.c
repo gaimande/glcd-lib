@@ -22,7 +22,7 @@ void main() {
         unsigned int temp_res;
         char txt_Vo[15];
         char txt_So[15];
-        float Vs = 0.302;
+        float Vs = 0.0755;
         float Vo;
         float So;
 
