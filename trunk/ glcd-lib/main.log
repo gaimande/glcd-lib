@@ -2,19 +2,19 @@
 warning: 0	1501	Specified search path does not exist: 'C:\Users\Jo\Desktop\GLCD Lib'	 
 warning: 0	1501	Specified search path does not exist: 'C:\Users\Jo\Desktop\18F4620'	 
 hint: 0	1139	Available RAM: 3947 [bytes], Available ROM: 65536 [bytes]	 
-diagnostics: 0	126	All files Preprocessed in 16 ms	 
+diagnostics: 0	126	All files Preprocessed in 31 ms	 
 diagnostics: 0	122	Compilation Started	glcd_pic.h
-diagnostics: 104	123	Compiled Successfully	main.c
+diagnostics: 109	123	Compiled Successfully	main.c
 hint: 240	1164	Variable 'dataIn' has been eliminated by optimizer	main.c
-hint: 294	1164	Variable 'h_line' has been eliminated by optimizer	main.c
-hint: 295	1164	Variable 'temp' has been eliminated by optimizer	main.c
-hint: 303	1164	Variable 'h_line' has been eliminated by optimizer	main.c
-hint: 304	1164	Variable 'temp' has been eliminated by optimizer	main.c
+hint: 296	1164	Variable 'h_line' has been eliminated by optimizer	main.c
+hint: 297	1164	Variable 'temp' has been eliminated by optimizer	main.c
+hint: 305	1164	Variable 'h_line' has been eliminated by optimizer	main.c
+hint: 306	1164	Variable 'temp' has been eliminated by optimizer	main.c
 hint: 10	1164	Variable 'data_shift' has been eliminated by optimizer	main.c
-diagnostics: 0	127	All files Compiled in 218 ms	 
-hint: 0	1144	Used RAM (bytes): 1183 (30%)  Free RAM (bytes): 2764 (70%)	Used RAM (bytes): 1183 (30%)  Free RAM (bytes): 2764 (70%)
-hint: 0	1144	Used ROM (bytes): 18795 (29%)  Free ROM (bytes): 46741 (71%)	Used ROM (bytes): 18795 (29%)  Free ROM (bytes): 46741 (71%)
+diagnostics: 0	127	All files Compiled in 250 ms	 
+hint: 0	1144	Used RAM (bytes): 1218 (31%)  Free RAM (bytes): 2729 (69%)	Used RAM (bytes): 1218 (31%)  Free RAM (bytes): 2729 (69%)
+hint: 0	1144	Used ROM (bytes): 18878 (29%)  Free ROM (bytes): 46658 (71%)	Used ROM (bytes): 18878 (29%)  Free ROM (bytes): 46658 (71%)
 diagnostics: 0	125	Project Linked Successfully	main.mcppi
 diagnostics: 0	128	Linked in 109 ms	 
-diagnostics: 0	129	Project 'main.mcppi' completed: 374 ms	 
-diagnostics: 0	103	Finished successfully: 11 Oct 2012, 10:42:08	main.mcppi
+diagnostics: 0	129	Project 'main.mcppi' completed: 421 ms	 
+diagnostics: 0	103	Finished successfully: 11 Oct 2012, 11:01:04	main.mcppi

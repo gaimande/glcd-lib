@@ -255,6 +255,7 @@ void GLCD_OUT_CMD(unsigned char glcd_cmd)
  GLCD_DataPort = glcd_cmd;
  GLCD_DataPort = glcd_cmd;
  GLCD_DataPort = glcd_cmd;
+ GLCD_DataPort = glcd_cmd;
  GLCD_EN = 0;
 }
 
@@ -262,6 +263,7 @@ void GLCD_OUT_DATA(unsigned char glcd_data)
 {
  GLCD_RS = 1;
  GLCD_EN = 1;
+ GLCD_DataPort = glcd_data;
  GLCD_DataPort = glcd_data;
  GLCD_DataPort = glcd_data;
  GLCD_DataPort = glcd_data;
@@ -595,7 +597,7 @@ unsigned int GLCD_OUT_STR(unsigned char glcd_x, unsigned char glcd_y, char *glcd
  }
  return (glcd_x);
 }
-#line 638 "c:/users/jo/desktop/new folder (2)/ glcd-lib/glcd_pic.h"
+#line 640 "c:/users/jo/desktop/new folder (2)/ glcd-lib/glcd_pic.h"
 unsigned int GLCD_OUT_DEC(unsigned char glcd_x, unsigned char glcd_y, unsigned long int glcd_n, unsigned char glcd_length, unsigned char black_white)
 {
  unsigned char glcd_temp;
@@ -698,6 +700,12 @@ void main() {
 
  while(1)
  {
+ GLCD_FILL( 0 );
+ GLCD_OUT_STR(0,0,"ADC Value", 1 );
+ GLCD_OUT_STR(0,10,"Voltage", 1 );
+ GLCD_OUT_STR(96,10,"V", 1 );
+ GLCD_OUT_STR(0,20,"Conduct.", 1 );
+ GLCD_OUT_STR(96,20,"uS/cm", 1 );
  temp_res = ADC_Read(0);
  Vo = (float)5/1023*temp_res;
  V1 = (float)Vo/0.4125;
@@ -708,16 +716,11 @@ void main() {
  sprintf(txt_V1,"%2.4f",V1);
  sprintf(txt_So,"%2.4f",So);
  GLCD_OUT_DEC(60, 0 ,temp_res ,4,  1 );
-
-
  GLCD_OUT_STR(60, 10 ,txt_V1,  1 );
  GLCD_OUT_STR(60, 20 ,txt_So,  1 );
  GLCD_DISPLAY();
  delay_ms(1000);
- GLCD_OUT_DEC(60, 0 ,temp_res ,4,  0 );
- GLCD_OUT_STR(60, 10 ,txt_Vo, 0 );
- GLCD_OUT_STR(60, 20 ,txt_So, 0 );
-#line 102 "C:/Users/Jo/Desktop/New folder (2)/ glcd-lib/main.c"
+#line 107 "C:/Users/Jo/Desktop/New folder (2)/ glcd-lib/main.c"
  }
 
 }
