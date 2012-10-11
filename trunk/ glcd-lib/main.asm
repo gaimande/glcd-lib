@@ -1,30 +1,30 @@
 
 _GLCD_INIT:
 
-;glcd_jo.h,174 :: 		void GLCD_INIT()
-;glcd_jo.h,176 :: 		GLCD_DataPort_Direction = 0x00;
-	BCF         TRISB+0, 0 
-;glcd_jo.h,177 :: 		GLCD_CS1_Direction = 0;
+;glcd_pic.h,158 :: 		void GLCD_INIT()
+;glcd_pic.h,160 :: 		GLCD_DataDir = 0x00;
+	CLRF        TRISB+0 
+;glcd_pic.h,161 :: 		GLCD_CS1_Direction = 0;
 	BCF         TRISE2_bit+0, 2 
-;glcd_jo.h,178 :: 		GLCD_CS2_Direction = 0;
+;glcd_pic.h,162 :: 		GLCD_CS2_Direction = 0;
 	BCF         TRISE1_bit+0, 1 
-;glcd_jo.h,179 :: 		GLCD_DI_Direction  = 0;
+;glcd_pic.h,163 :: 		GLCD_RS_Direction = 0;
 	BCF         TRISD5_bit+0, 5 
-;glcd_jo.h,180 :: 		GLCD_RW_Direction  = 0;
+;glcd_pic.h,164 :: 		GLCD_RW_Direction = 0;
 	BCF         TRISD6_bit+0, 6 
-;glcd_jo.h,181 :: 		GLCD_EN_Direction  = 0;
+;glcd_pic.h,165 :: 		GLCD_EN_Direction = 0;
 	BCF         TRISD7_bit+0, 7 
-;glcd_jo.h,182 :: 		GLCD_RST_Direction = 0;
+;glcd_pic.h,166 :: 		GLCD_RST_Direction = 0;
 	BCF         TRISE0_bit+0, 0 
-;glcd_jo.h,185 :: 		GLCD_RST = 1;
+;glcd_pic.h,169 :: 		GLCD_RST = 1;
 	BSF         RE0_bit+0, 0 
-;glcd_jo.h,186 :: 		GLCD_CS1 = 1;
+;glcd_pic.h,170 :: 		GLCD_CS1 = 1;
 	BSF         RE2_bit+0, 2 
-;glcd_jo.h,187 :: 		GLCD_CS2 = 1;
+;glcd_pic.h,171 :: 		GLCD_CS2 = 1;
 	BSF         RE1_bit+0, 1 
-;glcd_jo.h,188 :: 		GLCD_DI = 0;		// Set for instruction
-	BCF         RD5_bit+0, 5 
-;glcd_jo.h,190 :: 		delayTime(10000);
+;glcd_pic.h,173 :: 		GLCD_RW = 0;        //Clear RW  /  Command mode
+	BCF         RD6_bit+0, 6 
+;glcd_pic.h,175 :: 		delayTime(10000);
 	MOVLW       16
 	MOVWF       FARG_delayTime_counter+0 
 	MOVLW       39
@@ -33,11 +33,11 @@ _GLCD_INIT:
 	MOVWF       FARG_delayTime_counter+2 
 	MOVWF       FARG_delayTime_counter+3 
 	CALL        _delayTime+0, 0
-;glcd_jo.h,191 :: 		GLCD_OUT_CMD(0b11000000);
+;glcd_pic.h,176 :: 		GLCD_OUT_CMD(0b11000000);
 	MOVLW       192
 	MOVWF       FARG_GLCD_OUT_CMD_glcd_cmd+0 
 	CALL        _GLCD_OUT_CMD+0, 0
-;glcd_jo.h,193 :: 		delayTime(10000);
+;glcd_pic.h,179 :: 		delayTime(10000);
 	MOVLW       16
 	MOVWF       FARG_delayTime_counter+0 
 	MOVLW       39
@@ -46,11 +46,11 @@ _GLCD_INIT:
 	MOVWF       FARG_delayTime_counter+2 
 	MOVWF       FARG_delayTime_counter+3 
 	CALL        _delayTime+0, 0
-;glcd_jo.h,194 :: 		GLCD_OUT_CMD(0b01000000);
+;glcd_pic.h,180 :: 		GLCD_OUT_CMD(0b01000000);
 	MOVLW       64
 	MOVWF       FARG_GLCD_OUT_CMD_glcd_cmd+0 
 	CALL        _GLCD_OUT_CMD+0, 0
-;glcd_jo.h,196 :: 		delayTime(10000);
+;glcd_pic.h,182 :: 		delayTime(10000);
 	MOVLW       16
 	MOVWF       FARG_delayTime_counter+0 
 	MOVLW       39
@@ -59,11 +59,11 @@ _GLCD_INIT:
 	MOVWF       FARG_delayTime_counter+2 
 	MOVWF       FARG_delayTime_counter+3 
 	CALL        _delayTime+0, 0
-;glcd_jo.h,197 :: 		GLCD_OUT_CMD(0b10111000);
+;glcd_pic.h,183 :: 		GLCD_OUT_CMD(0b10111000);
 	MOVLW       184
 	MOVWF       FARG_GLCD_OUT_CMD_glcd_cmd+0 
 	CALL        _GLCD_OUT_CMD+0, 0
-;glcd_jo.h,199 :: 		delayTime(10000);
+;glcd_pic.h,185 :: 		delayTime(10000);
 	MOVLW       16
 	MOVWF       FARG_delayTime_counter+0 
 	MOVLW       39
@@ -72,122 +72,85 @@ _GLCD_INIT:
 	MOVWF       FARG_delayTime_counter+2 
 	MOVWF       FARG_delayTime_counter+3 
 	CALL        _delayTime+0, 0
-;glcd_jo.h,200 :: 		GLCD_OUT_CMD(0b00111111);
+;glcd_pic.h,186 :: 		GLCD_OUT_CMD(0b00111111);
 	MOVLW       63
 	MOVWF       FARG_GLCD_OUT_CMD_glcd_cmd+0 
 	CALL        _GLCD_OUT_CMD+0, 0
-;glcd_jo.h,202 :: 		GLCD_CS1 = 0;		//Disable the CS1 of display
+;glcd_pic.h,188 :: 		GLCD_CS1 = 0;        //Disable the CS1 of display
 	BCF         RE2_bit+0, 2 
-;glcd_jo.h,203 :: 		GLCD_CS2 = 0;       //Disable the CS2 of display
+;glcd_pic.h,189 :: 		GLCD_CS2 = 0;        //Disable the CS2 of display
 	BCF         RE1_bit+0, 1 
-;glcd_jo.h,204 :: 		}
+;glcd_pic.h,190 :: 		}
 	RETURN      0
 ; end of _GLCD_INIT
 
-_GLCD_FILL:
-
-;glcd_jo.h,214 :: 		void GLCD_FILL(unsigned char black_white)
-;glcd_jo.h,217 :: 		for(index=0;index<1024;index++)
-	CLRF        GLCD_FILL_index_L0+0 
-	CLRF        GLCD_FILL_index_L0+1 
-L_GLCD_FILL0:
-	MOVLW       4
-	SUBWF       GLCD_FILL_index_L0+1, 0 
-	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_FILL155
-	MOVLW       0
-	SUBWF       GLCD_FILL_index_L0+0, 0 
-L__GLCD_FILL155:
-	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_FILL1
-;glcd_jo.h,219 :: 		glcd_buff[index] = black_white;
-	MOVLW       _glcd_buff+0
-	ADDWF       GLCD_FILL_index_L0+0, 0 
-	MOVWF       FSR1L 
-	MOVLW       hi_addr(_glcd_buff+0)
-	ADDWFC      GLCD_FILL_index_L0+1, 0 
-	MOVWF       FSR1H 
-	MOVF        FARG_GLCD_FILL_black_white+0, 0 
-	MOVWF       POSTINC1+0 
-;glcd_jo.h,217 :: 		for(index=0;index<1024;index++)
-	INFSNZ      GLCD_FILL_index_L0+0, 1 
-	INCF        GLCD_FILL_index_L0+1, 1 
-;glcd_jo.h,220 :: 		}
-	GOTO        L_GLCD_FILL0
-L_GLCD_FILL1:
-;glcd_jo.h,221 :: 		GLCD_DISPLAY();
-	CALL        _GLCD_DISPLAY+0, 0
-;glcd_jo.h,222 :: 		}
-	RETURN      0
-; end of _GLCD_FILL
-
 _GLCD_DISPLAY:
 
-;glcd_jo.h,231 :: 		void GLCD_DISPLAY()
-;glcd_jo.h,233 :: 		for(glcd_address = 0; glcd_address < 1024; glcd_address++)
+;glcd_pic.h,192 :: 		void GLCD_DISPLAY()
+;glcd_pic.h,194 :: 		for(glcd_address = 0; glcd_address < 1024; glcd_address++)
 	CLRF        _glcd_address+0 
 	CLRF        _glcd_address+1 
-L_GLCD_DISPLAY3:
+L_GLCD_DISPLAY0:
 	MOVLW       4
 	SUBWF       _glcd_address+1, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DISPLAY156
+	GOTO        L__GLCD_DISPLAY158
 	MOVLW       0
 	SUBWF       _glcd_address+0, 0 
-L__GLCD_DISPLAY156:
+L__GLCD_DISPLAY158:
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DISPLAY4
-;glcd_jo.h,235 :: 		if(glcd_column == 128)
+	GOTO        L_GLCD_DISPLAY1
+;glcd_pic.h,196 :: 		if(glcd_column == 128)
 	MOVF        _glcd_column+0, 0 
 	XORLW       128
 	BTFSS       STATUS+0, 2 
-	GOTO        L_GLCD_DISPLAY6
-;glcd_jo.h,237 :: 		glcd_column = 0;
+	GOTO        L_GLCD_DISPLAY3
+;glcd_pic.h,198 :: 		glcd_column = 0;
 	CLRF        _glcd_column+0 
-;glcd_jo.h,238 :: 		glcd_line++;
+;glcd_pic.h,199 :: 		glcd_line++;
 	INCF        _glcd_line+0, 1 
-;glcd_jo.h,242 :: 		GLCD_CS1 = 1;       //Enable the CS1 of the display
+;glcd_pic.h,203 :: 		GLCD_CS1 = 1;        //Enable the CS1 of the display
 	BSF         RE2_bit+0, 2 
-;glcd_jo.h,243 :: 		GLCD_CS2 = 1;		//Enable the CS2 of the display
+;glcd_pic.h,204 :: 		GLCD_CS2 = 1; //Enable the CS2 of the display
 	BSF         RE1_bit+0, 1 
-;glcd_jo.h,245 :: 		glcd_line &= 0x07;
+;glcd_pic.h,206 :: 		glcd_line &= 0x07;
 	MOVLW       7
 	ANDWF       _glcd_line+0, 0 
 	MOVWF       R0 
 	MOVF        R0, 0 
 	MOVWF       _glcd_line+0 
-;glcd_jo.h,246 :: 		glcd_line |= 0xB8;
+;glcd_pic.h,207 :: 		glcd_line |= 0xB8;
 	MOVLW       184
 	IORWF       R0, 1 
 	MOVF        R0, 0 
 	MOVWF       _glcd_line+0 
-;glcd_jo.h,248 :: 		GLCD_OUT_CMD(glcd_line);
+;glcd_pic.h,209 :: 		GLCD_OUT_CMD(glcd_line);
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_OUT_CMD_glcd_cmd+0 
 	CALL        _GLCD_OUT_CMD+0, 0
-;glcd_jo.h,250 :: 		GLCD_OUT_CMD(0b01000000);
+;glcd_pic.h,211 :: 		GLCD_OUT_CMD(0b01000000);
 	MOVLW       64
 	MOVWF       FARG_GLCD_OUT_CMD_glcd_cmd+0 
 	CALL        _GLCD_OUT_CMD+0, 0
-;glcd_jo.h,251 :: 		}
-L_GLCD_DISPLAY6:
-;glcd_jo.h,253 :: 		if(glcd_column <= 63)
+;glcd_pic.h,212 :: 		}
+L_GLCD_DISPLAY3:
+;glcd_pic.h,214 :: 		if(glcd_column <= 63)
 	MOVF        _glcd_column+0, 0 
 	SUBLW       63
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DISPLAY7
-;glcd_jo.h,254 :: 		GLCD_CS1_ENABLE();
+	GOTO        L_GLCD_DISPLAY4
+;glcd_pic.h,215 :: 		GLCD_CS1_ENABLE();
 	CALL        _GLCD_CS1_ENABLE+0, 0
-L_GLCD_DISPLAY7:
-;glcd_jo.h,256 :: 		if(glcd_column >= 64)
+L_GLCD_DISPLAY4:
+;glcd_pic.h,217 :: 		if(glcd_column >= 64)
 	MOVLW       64
 	SUBWF       _glcd_column+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DISPLAY8
-;glcd_jo.h,257 :: 		GLCD_CS2_ENABLE();
+	GOTO        L_GLCD_DISPLAY5
+;glcd_pic.h,218 :: 		GLCD_CS2_ENABLE();
 	CALL        _GLCD_CS2_ENABLE+0, 0
-L_GLCD_DISPLAY8:
-;glcd_jo.h,259 :: 		GLCD_OUT_DATA(glcd_buff[glcd_address]);
+L_GLCD_DISPLAY5:
+;glcd_pic.h,220 :: 		GLCD_OUT_DATA(glcd_buff[glcd_address]);
 	MOVLW       _glcd_buff+0
 	ADDWF       _glcd_address+0, 0 
 	MOVWF       FSR0L 
@@ -197,94 +160,159 @@ L_GLCD_DISPLAY8:
 	MOVF        POSTINC0+0, 0 
 	MOVWF       FARG_GLCD_OUT_DATA_glcd_data+0 
 	CALL        _GLCD_OUT_DATA+0, 0
-;glcd_jo.h,261 :: 		glcd_column++;
+;glcd_pic.h,222 :: 		glcd_column++;
 	INCF        _glcd_column+0, 1 
-;glcd_jo.h,233 :: 		for(glcd_address = 0; glcd_address < 1024; glcd_address++)
+;glcd_pic.h,194 :: 		for(glcd_address = 0; glcd_address < 1024; glcd_address++)
 	INFSNZ      _glcd_address+0, 1 
 	INCF        _glcd_address+1, 1 
-;glcd_jo.h,262 :: 		}
-	GOTO        L_GLCD_DISPLAY3
-L_GLCD_DISPLAY4:
-;glcd_jo.h,263 :: 		}
+;glcd_pic.h,223 :: 		}
+	GOTO        L_GLCD_DISPLAY0
+L_GLCD_DISPLAY1:
+;glcd_pic.h,224 :: 		}
 	RETURN      0
 ; end of _GLCD_DISPLAY
 
 _GLCD_CS1_ENABLE:
 
-;glcd_jo.h,273 :: 		void GLCD_CS1_ENABLE()
-;glcd_jo.h,275 :: 		GLCD_CS1 = 1; //Enable the CS1 of the display
+;glcd_pic.h,226 :: 		void GLCD_CS1_ENABLE()
+;glcd_pic.h,228 :: 		GLCD_CS1 = 1; //Enable the CS1 of the display
 	BSF         RE2_bit+0, 2 
-;glcd_jo.h,276 :: 		GLCD_CS2 = 0; //Disable the CS2 of the display
+;glcd_pic.h,229 :: 		GLCD_CS2 = 0; //Disable the CS2 of the display
 	BCF         RE1_bit+0, 1 
-;glcd_jo.h,277 :: 		}
+;glcd_pic.h,230 :: 		}
 	RETURN      0
 ; end of _GLCD_CS1_ENABLE
 
 _GLCD_CS2_ENABLE:
 
-;glcd_jo.h,287 :: 		void GLCD_CS2_ENABLE()
-;glcd_jo.h,289 :: 		GLCD_CS2 = 1; //Enable the CS2 of the display
-	BSF         RE1_bit+0, 1 
-;glcd_jo.h,290 :: 		GLCD_CS1 = 0; //Disable the CS1 of the display
+;glcd_pic.h,232 :: 		void GLCD_CS2_ENABLE()
+;glcd_pic.h,234 :: 		GLCD_CS1 = 0; //Enable the CS2 of the display
 	BCF         RE2_bit+0, 2 
-;glcd_jo.h,291 :: 		}
+;glcd_pic.h,235 :: 		GLCD_CS2 = 1; //Disable the CS1 of the display
+	BSF         RE1_bit+0, 1 
+;glcd_pic.h,236 :: 		}
 	RETURN      0
 ; end of _GLCD_CS2_ENABLE
 
+_GLCD_WAIT:
+
+;glcd_pic.h,238 :: 		void GLCD_WAIT()
+;glcd_pic.h,242 :: 		GLCD_DataDir = 0xFF;                        //Make portB all inputs
+	MOVLW       255
+	MOVWF       TRISB+0 
+;glcd_pic.h,244 :: 		GLCD_RW = 1;        //Set r/w pin to read
+	BSF         RD6_bit+0, 6 
+;glcd_pic.h,245 :: 		GLCD_RS = 0;        //Set register select to command
+	BCF         RD5_bit+0, 5 
+;glcd_pic.h,247 :: 		do
+L_GLCD_WAIT6:
+;glcd_pic.h,249 :: 		GLCD_EN =1;                 //lcd 'E' pin high
+	BSF         RD7_bit+0, 7 
+;glcd_pic.h,250 :: 		GLCD_EN =1;                 //lcd 'E' pin high
+	BSF         RD7_bit+0, 7 
+;glcd_pic.h,251 :: 		GLCD_EN =1;                 //lcd 'E' pin high
+	BSF         RD7_bit+0, 7 
+;glcd_pic.h,252 :: 		GLCD_EN =1;                 //lcd 'E' pin high
+	BSF         RD7_bit+0, 7 
+;glcd_pic.h,253 :: 		GLCD_EN =0;                 //lcd 'E' pin low
+	BCF         RD7_bit+0, 7 
+;glcd_pic.h,256 :: 		while (dataIn);        // loop until bit7 of 'dataIn' will be cleared.
+	MOVF        PORTB+0, 1 
+	BTFSS       STATUS+0, 2 
+	GOTO        L_GLCD_WAIT6
+;glcd_pic.h,258 :: 		GLCD_DataDir = 0x00;                //Make portB all outputs
+	CLRF        TRISB+0 
+;glcd_pic.h,260 :: 		GLCD_RW = 0;        //Set r/w pin to write
+	BCF         RD6_bit+0, 6 
+;glcd_pic.h,261 :: 		}
+	RETURN      0
+; end of _GLCD_WAIT
+
+_delayTime:
+
+;glcd_pic.h,263 :: 		void delayTime (unsigned long counter)
+;glcd_pic.h,265 :: 		while (counter--);
+L_delayTime9:
+	MOVF        FARG_delayTime_counter+0, 0 
+	MOVWF       R0 
+	MOVF        FARG_delayTime_counter+1, 0 
+	MOVWF       R1 
+	MOVF        FARG_delayTime_counter+2, 0 
+	MOVWF       R2 
+	MOVF        FARG_delayTime_counter+3, 0 
+	MOVWF       R3 
+	MOVLW       1
+	SUBWF       FARG_delayTime_counter+0, 1 
+	MOVLW       0
+	SUBWFB      FARG_delayTime_counter+1, 1 
+	SUBWFB      FARG_delayTime_counter+2, 1 
+	SUBWFB      FARG_delayTime_counter+3, 1 
+	MOVF        R0, 0 
+	IORWF       R1, 0 
+	IORWF       R2, 0 
+	IORWF       R3, 0 
+	BTFSC       STATUS+0, 2 
+	GOTO        L_delayTime10
+	GOTO        L_delayTime9
+L_delayTime10:
+;glcd_pic.h,266 :: 		}
+	RETURN      0
+; end of _delayTime
+
 _GLCD_OUT_CMD:
 
-;glcd_jo.h,301 :: 		void GLCD_OUT_CMD(unsigned char glcd_cmd)
-;glcd_jo.h,303 :: 		GLCD_DI = 0;   //Clear RS. Command mode
+;glcd_pic.h,268 :: 		void GLCD_OUT_CMD(unsigned char glcd_cmd)
+;glcd_pic.h,270 :: 		GLCD_RS = 0;        //Clear RS. Command mode
 	BCF         RD5_bit+0, 5 
-;glcd_jo.h,304 :: 		GLCD_EN = 1;   //lcd 'E' pin high
+;glcd_pic.h,271 :: 		GLCD_EN = 1;        //lcd 'E' pin high
 	BSF         RD7_bit+0, 7 
-;glcd_jo.h,305 :: 		GLCD_data_PORT = glcd_cmd;
+;glcd_pic.h,272 :: 		GLCD_DataPort = glcd_cmd;
 	MOVF        FARG_GLCD_OUT_CMD_glcd_cmd+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,306 :: 		GLCD_data_PORT = glcd_cmd;
+;glcd_pic.h,273 :: 		GLCD_DataPort = glcd_cmd;
 	MOVF        FARG_GLCD_OUT_CMD_glcd_cmd+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,307 :: 		GLCD_data_PORT = glcd_cmd;
+;glcd_pic.h,274 :: 		GLCD_DataPort = glcd_cmd;
 	MOVF        FARG_GLCD_OUT_CMD_glcd_cmd+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,308 :: 		GLCD_data_PORT = glcd_cmd;
+;glcd_pic.h,275 :: 		GLCD_DataPort = glcd_cmd;
 	MOVF        FARG_GLCD_OUT_CMD_glcd_cmd+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,309 :: 		GLCD_EN = 0;   //lcd 'E' pin low
+;glcd_pic.h,276 :: 		GLCD_EN = 0;         //lcd 'E' pin low
 	BCF         RD7_bit+0, 7 
-;glcd_jo.h,310 :: 		}
+;glcd_pic.h,277 :: 		}
 	RETURN      0
 ; end of _GLCD_OUT_CMD
 
 _GLCD_OUT_DATA:
 
-;glcd_jo.h,320 :: 		void GLCD_OUT_DATA(unsigned char glcd_data)
-;glcd_jo.h,322 :: 		GLCD_DI = 1;
+;glcd_pic.h,279 :: 		void GLCD_OUT_DATA(unsigned char glcd_data)
+;glcd_pic.h,281 :: 		GLCD_RS = 1;
 	BSF         RD5_bit+0, 5 
-;glcd_jo.h,323 :: 		GLCD_EN = 1;	//lcd 'E' pin high
+;glcd_pic.h,282 :: 		GLCD_EN = 1;                 //lcd 'E' pin high
 	BSF         RD7_bit+0, 7 
-;glcd_jo.h,324 :: 		GLCD_data_PORT = glcd_data;
+;glcd_pic.h,283 :: 		GLCD_DataPort = glcd_data;
 	MOVF        FARG_GLCD_OUT_DATA_glcd_data+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,325 :: 		GLCD_data_PORT = glcd_data;
+;glcd_pic.h,284 :: 		GLCD_DataPort = glcd_data;
 	MOVF        FARG_GLCD_OUT_DATA_glcd_data+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,326 :: 		GLCD_data_PORT = glcd_data;
+;glcd_pic.h,285 :: 		GLCD_DataPort = glcd_data;
 	MOVF        FARG_GLCD_OUT_DATA_glcd_data+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,327 :: 		GLCD_data_PORT = glcd_data;
+;glcd_pic.h,286 :: 		GLCD_DataPort = glcd_data;
 	MOVF        FARG_GLCD_OUT_DATA_glcd_data+0, 0 
 	MOVWF       PORTB+0 
-;glcd_jo.h,328 :: 		GLCD_EN = 0;	//lcd 'E' pin low
+;glcd_pic.h,287 :: 		GLCD_EN = 0;         //lcd 'E' pin low
 	BCF         RD7_bit+0, 7 
-;glcd_jo.h,329 :: 		}
+;glcd_pic.h,288 :: 		}
 	RETURN      0
 ; end of _GLCD_OUT_DATA
 
 _GLCD_POINT_DRW:
 
-;glcd_jo.h,339 :: 		void GLCD_POINT_DRW(unsigned char x, unsigned char y)
-;glcd_jo.h,343 :: 		temp = x + ((y >> 3) << 7);
+;glcd_pic.h,292 :: 		void GLCD_POINT_DRW(unsigned char x, unsigned char y)
+;glcd_pic.h,296 :: 		temp = x + ((y >> 3) << 7);
 	MOVF        FARG_GLCD_POINT_DRW_y+0, 0 
 	MOVWF       R3 
 	RRCF        R3, 1 
@@ -300,25 +328,25 @@ _GLCD_POINT_DRW:
 	MOVLW       0
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__GLCD_POINT_DRW157:
-	BZ          L__GLCD_POINT_DRW158
+L__GLCD_POINT_DRW159:
+	BZ          L__GLCD_POINT_DRW160
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
 	ADDLW       255
-	GOTO        L__GLCD_POINT_DRW157
-L__GLCD_POINT_DRW158:
+	GOTO        L__GLCD_POINT_DRW159
+L__GLCD_POINT_DRW160:
 	MOVF        FARG_GLCD_POINT_DRW_x+0, 0 
 	ADDWF       R0, 0 
 	MOVWF       R2 
 	MOVLW       0
 	ADDWFC      R1, 0 
 	MOVWF       R3 
-;glcd_jo.h,344 :: 		h_line = (unsigned char)(y & 0x07);
+;glcd_pic.h,297 :: 		h_line = (unsigned char)(y & 0x07);
 	MOVLW       7
 	ANDWF       FARG_GLCD_POINT_DRW_y+0, 0 
 	MOVWF       R0 
-;glcd_jo.h,345 :: 		glcd_buff[temp] |= (1<<h_line);
+;glcd_pic.h,298 :: 		glcd_buff[temp] |= (1<<h_line);
 	MOVLW       _glcd_buff+0
 	ADDWF       R2, 0 
 	MOVWF       R4 
@@ -330,13 +358,13 @@ L__GLCD_POINT_DRW158:
 	MOVLW       1
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__GLCD_POINT_DRW159:
-	BZ          L__GLCD_POINT_DRW160
+L__GLCD_POINT_DRW161:
+	BZ          L__GLCD_POINT_DRW162
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	ADDLW       255
-	GOTO        L__GLCD_POINT_DRW159
-L__GLCD_POINT_DRW160:
+	GOTO        L__GLCD_POINT_DRW161
+L__GLCD_POINT_DRW162:
 	MOVFF       R4, FSR0L
 	MOVFF       R5, FSR0H
 	MOVF        POSTINC0+0, 0 
@@ -345,14 +373,14 @@ L__GLCD_POINT_DRW160:
 	MOVFF       R5, FSR1H
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,346 :: 		}
+;glcd_pic.h,299 :: 		}
 	RETURN      0
 ; end of _GLCD_POINT_DRW
 
 _GLCD_POINT_CLR:
 
-;glcd_jo.h,356 :: 		void GLCD_POINT_CLR(unsigned char x, unsigned char y)
-;glcd_jo.h,360 :: 		temp = x + ((y >> 3) << 7);
+;glcd_pic.h,301 :: 		void GLCD_POINT_CLR(unsigned char x, unsigned char y)
+;glcd_pic.h,305 :: 		temp = x + ((y >> 3) << 7);
 	MOVF        FARG_GLCD_POINT_CLR_y+0, 0 
 	MOVWF       R3 
 	RRCF        R3, 1 
@@ -368,25 +396,25 @@ _GLCD_POINT_CLR:
 	MOVLW       0
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__GLCD_POINT_CLR161:
-	BZ          L__GLCD_POINT_CLR162
+L__GLCD_POINT_CLR163:
+	BZ          L__GLCD_POINT_CLR164
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
 	ADDLW       255
-	GOTO        L__GLCD_POINT_CLR161
-L__GLCD_POINT_CLR162:
+	GOTO        L__GLCD_POINT_CLR163
+L__GLCD_POINT_CLR164:
 	MOVF        FARG_GLCD_POINT_CLR_x+0, 0 
 	ADDWF       R0, 0 
 	MOVWF       R2 
 	MOVLW       0
 	ADDWFC      R1, 0 
 	MOVWF       R3 
-;glcd_jo.h,361 :: 		h_line = (unsigned char)(y & 0x07);
+;glcd_pic.h,306 :: 		h_line = (unsigned char)(y & 0x07);
 	MOVLW       7
 	ANDWF       FARG_GLCD_POINT_CLR_y+0, 0 
 	MOVWF       R0 
-;glcd_jo.h,362 :: 		glcd_buff[temp] &= ~(1<<h_line);
+;glcd_pic.h,307 :: 		glcd_buff[temp] &= ~(1<<h_line);
 	MOVLW       _glcd_buff+0
 	ADDWF       R2, 0 
 	MOVWF       R4 
@@ -398,13 +426,13 @@ L__GLCD_POINT_CLR162:
 	MOVLW       1
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__GLCD_POINT_CLR163:
-	BZ          L__GLCD_POINT_CLR164
+L__GLCD_POINT_CLR165:
+	BZ          L__GLCD_POINT_CLR166
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	ADDLW       255
-	GOTO        L__GLCD_POINT_CLR163
-L__GLCD_POINT_CLR164:
+	GOTO        L__GLCD_POINT_CLR165
+L__GLCD_POINT_CLR166:
 	COMF        R0, 1 
 	MOVFF       R4, FSR0L
 	MOVFF       R5, FSR0H
@@ -414,328 +442,328 @@ L__GLCD_POINT_CLR164:
 	MOVFF       R5, FSR1H
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,363 :: 		}
+;glcd_pic.h,308 :: 		}
 	RETURN      0
 ; end of _GLCD_POINT_CLR
 
 _GLCD_DRW_REC_EMPTY:
 
-;glcd_jo.h,376 :: 		void GLCD_DRW_REC_EMPTY(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2, unsigned char black_white)
-;glcd_jo.h,379 :: 		if(x1 > x2)
+;glcd_pic.h,310 :: 		void GLCD_DRW_REC_EMPTY(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2, unsigned char black_white)
+;glcd_pic.h,313 :: 		if(x1 > x2)
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_EMPTY9
-;glcd_jo.h,381 :: 		glcd_temp = x1;
+	GOTO        L_GLCD_DRW_REC_EMPTY11
+;glcd_pic.h,315 :: 		glcd_temp = x1;
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
 	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
-;glcd_jo.h,382 :: 		x1 = x2;
+;glcd_pic.h,316 :: 		x1 = x2;
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_EMPTY_x1+0 
-;glcd_jo.h,383 :: 		x2 = glcd_temp;
+;glcd_pic.h,317 :: 		x2 = glcd_temp;
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_EMPTY_x2+0 
-;glcd_jo.h,384 :: 		}
-L_GLCD_DRW_REC_EMPTY9:
-;glcd_jo.h,385 :: 		if(y1 > y2)
+;glcd_pic.h,318 :: 		}
+L_GLCD_DRW_REC_EMPTY11:
+;glcd_pic.h,319 :: 		if(y1 > y2)
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_EMPTY10
-;glcd_jo.h,387 :: 		glcd_temp = y1;
+	GOTO        L_GLCD_DRW_REC_EMPTY12
+;glcd_pic.h,321 :: 		glcd_temp = y1;
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
 	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
-;glcd_jo.h,388 :: 		y1 = y2;
+;glcd_pic.h,322 :: 		y1 = y2;
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_EMPTY_y1+0 
-;glcd_jo.h,389 :: 		y2 = glcd_temp;
+;glcd_pic.h,323 :: 		y2 = glcd_temp;
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_EMPTY_y2+0 
-;glcd_jo.h,390 :: 		}
-L_GLCD_DRW_REC_EMPTY10:
-;glcd_jo.h,391 :: 		if(black_white)
+;glcd_pic.h,324 :: 		}
+L_GLCD_DRW_REC_EMPTY12:
+;glcd_pic.h,325 :: 		if(black_white)
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_REC_EMPTY11
-;glcd_jo.h,393 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
-	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
-	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
-L_GLCD_DRW_REC_EMPTY12:
-	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
-	SUBWF       FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
-	BTFSS       STATUS+0, 0 
 	GOTO        L_GLCD_DRW_REC_EMPTY13
-;glcd_jo.h,395 :: 		GLCD_POINT_DRW(glcd_temp,y1);
-	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_x+0 
-	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_y+0 
-	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,396 :: 		GLCD_POINT_DRW(glcd_temp,y2);
-	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_x+0 
-	MOVF        FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_y+0 
-	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,393 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
-	INCF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 1 
-;glcd_jo.h,397 :: 		}
-	GOTO        L_GLCD_DRW_REC_EMPTY12
-L_GLCD_DRW_REC_EMPTY13:
-;glcd_jo.h,398 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
-	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
-	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
-L_GLCD_DRW_REC_EMPTY15:
-	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
-	SUBWF       FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
-	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_EMPTY16
-;glcd_jo.h,400 :: 		GLCD_POINT_DRW(x1,glcd_temp);
-	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_x+0 
-	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_y+0 
-	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,401 :: 		GLCD_POINT_DRW(x2,glcd_temp);
-	MOVF        FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_x+0 
-	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
-	MOVWF       FARG_GLCD_POINT_DRW_y+0 
-	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,398 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
-	INCF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 1 
-;glcd_jo.h,402 :: 		}
-	GOTO        L_GLCD_DRW_REC_EMPTY15
-L_GLCD_DRW_REC_EMPTY16:
-;glcd_jo.h,403 :: 		}
-	GOTO        L_GLCD_DRW_REC_EMPTY18
-L_GLCD_DRW_REC_EMPTY11:
-;glcd_jo.h,406 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
+;glcd_pic.h,327 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
 	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
-L_GLCD_DRW_REC_EMPTY19:
+L_GLCD_DRW_REC_EMPTY14:
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
 	BTFSS       STATUS+0, 0 
+	GOTO        L_GLCD_DRW_REC_EMPTY15
+;glcd_pic.h,329 :: 		GLCD_POINT_DRW(glcd_temp,y1);
+	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_x+0 
+	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_y+0 
+	CALL        _GLCD_POINT_DRW+0, 0
+;glcd_pic.h,330 :: 		GLCD_POINT_DRW(glcd_temp,y2);
+	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_x+0 
+	MOVF        FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_y+0 
+	CALL        _GLCD_POINT_DRW+0, 0
+;glcd_pic.h,327 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
+	INCF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 1 
+;glcd_pic.h,331 :: 		}
+	GOTO        L_GLCD_DRW_REC_EMPTY14
+L_GLCD_DRW_REC_EMPTY15:
+;glcd_pic.h,332 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
+	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
+	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
+L_GLCD_DRW_REC_EMPTY17:
+	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
+	SUBWF       FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
+	BTFSS       STATUS+0, 0 
+	GOTO        L_GLCD_DRW_REC_EMPTY18
+;glcd_pic.h,334 :: 		GLCD_POINT_DRW(x1,glcd_temp);
+	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_x+0 
+	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_y+0 
+	CALL        _GLCD_POINT_DRW+0, 0
+;glcd_pic.h,335 :: 		GLCD_POINT_DRW(x2,glcd_temp);
+	MOVF        FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_x+0 
+	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_y+0 
+	CALL        _GLCD_POINT_DRW+0, 0
+;glcd_pic.h,332 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
+	INCF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 1 
+;glcd_pic.h,336 :: 		}
+	GOTO        L_GLCD_DRW_REC_EMPTY17
+L_GLCD_DRW_REC_EMPTY18:
+;glcd_pic.h,337 :: 		}
 	GOTO        L_GLCD_DRW_REC_EMPTY20
-;glcd_jo.h,408 :: 		GLCD_POINT_CLR(glcd_temp,y1);
+L_GLCD_DRW_REC_EMPTY13:
+;glcd_pic.h,340 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
+	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
+	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
+L_GLCD_DRW_REC_EMPTY21:
+	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
+	SUBWF       FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
+	BTFSS       STATUS+0, 0 
+	GOTO        L_GLCD_DRW_REC_EMPTY22
+;glcd_pic.h,342 :: 		GLCD_POINT_CLR(glcd_temp,y1);
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,409 :: 		GLCD_POINT_CLR(glcd_temp,y2);
+;glcd_pic.h,343 :: 		GLCD_POINT_CLR(glcd_temp,y2);
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,406 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
+;glcd_pic.h,340 :: 		for(glcd_temp=x1;glcd_temp<=x2;glcd_temp++)
 	INCF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 1 
-;glcd_jo.h,410 :: 		}
-	GOTO        L_GLCD_DRW_REC_EMPTY19
-L_GLCD_DRW_REC_EMPTY20:
-;glcd_jo.h,411 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
+;glcd_pic.h,344 :: 		}
+	GOTO        L_GLCD_DRW_REC_EMPTY21
+L_GLCD_DRW_REC_EMPTY22:
+;glcd_pic.h,345 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_y1+0, 0 
 	MOVWF       GLCD_DRW_REC_EMPTY_glcd_temp_L0+0 
-L_GLCD_DRW_REC_EMPTY22:
+L_GLCD_DRW_REC_EMPTY24:
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_EMPTY_y2+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_EMPTY23
-;glcd_jo.h,413 :: 		GLCD_POINT_CLR(x1,glcd_temp);
+	GOTO        L_GLCD_DRW_REC_EMPTY25
+;glcd_pic.h,347 :: 		GLCD_POINT_CLR(x1,glcd_temp);
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_x1+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,414 :: 		GLCD_POINT_CLR(x2,glcd_temp);
+;glcd_pic.h,348 :: 		GLCD_POINT_CLR(x2,glcd_temp);
 	MOVF        FARG_GLCD_DRW_REC_EMPTY_x2+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,411 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
+;glcd_pic.h,345 :: 		for(glcd_temp=y1;glcd_temp<=y2;glcd_temp++)
 	INCF        GLCD_DRW_REC_EMPTY_glcd_temp_L0+0, 1 
-;glcd_jo.h,415 :: 		}
-	GOTO        L_GLCD_DRW_REC_EMPTY22
-L_GLCD_DRW_REC_EMPTY23:
-;glcd_jo.h,416 :: 		}
-L_GLCD_DRW_REC_EMPTY18:
-;glcd_jo.h,417 :: 		}
+;glcd_pic.h,349 :: 		}
+	GOTO        L_GLCD_DRW_REC_EMPTY24
+L_GLCD_DRW_REC_EMPTY25:
+;glcd_pic.h,350 :: 		}
+L_GLCD_DRW_REC_EMPTY20:
+;glcd_pic.h,351 :: 		}
 	RETURN      0
 ; end of _GLCD_DRW_REC_EMPTY
 
 _GLCD_DRW_REC_SOLID:
 
-;glcd_jo.h,429 :: 		void GLCD_DRW_REC_SOLID(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2, unsigned char black_white)
-;glcd_jo.h,433 :: 		if(x1 > x2)
+;glcd_pic.h,353 :: 		void GLCD_DRW_REC_SOLID(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2, unsigned char black_white)
+;glcd_pic.h,357 :: 		if(x1 > x2)
 	MOVF        FARG_GLCD_DRW_REC_SOLID_x1+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_SOLID_x2+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_SOLID25
-;glcd_jo.h,435 :: 		glcd_temp = x1;
+	GOTO        L_GLCD_DRW_REC_SOLID27
+;glcd_pic.h,359 :: 		glcd_temp = x1;
 	MOVF        FARG_GLCD_DRW_REC_SOLID_x1+0, 0 
 	MOVWF       GLCD_DRW_REC_SOLID_glcd_temp_L0+0 
-;glcd_jo.h,436 :: 		x1 = x2;
+;glcd_pic.h,360 :: 		x1 = x2;
 	MOVF        FARG_GLCD_DRW_REC_SOLID_x2+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_SOLID_x1+0 
-;glcd_jo.h,437 :: 		x2 = glcd_temp;
+;glcd_pic.h,361 :: 		x2 = glcd_temp;
 	MOVF        GLCD_DRW_REC_SOLID_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_SOLID_x2+0 
-;glcd_jo.h,438 :: 		}
-L_GLCD_DRW_REC_SOLID25:
-;glcd_jo.h,439 :: 		if(y1 > y2)
+;glcd_pic.h,362 :: 		}
+L_GLCD_DRW_REC_SOLID27:
+;glcd_pic.h,363 :: 		if(y1 > y2)
 	MOVF        FARG_GLCD_DRW_REC_SOLID_y1+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_SOLID_y2+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_SOLID26
-;glcd_jo.h,441 :: 		glcd_temp = y1;
+	GOTO        L_GLCD_DRW_REC_SOLID28
+;glcd_pic.h,365 :: 		glcd_temp = y1;
 	MOVF        FARG_GLCD_DRW_REC_SOLID_y1+0, 0 
 	MOVWF       GLCD_DRW_REC_SOLID_glcd_temp_L0+0 
-;glcd_jo.h,442 :: 		y1 = y2;
+;glcd_pic.h,366 :: 		y1 = y2;
 	MOVF        FARG_GLCD_DRW_REC_SOLID_y2+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_SOLID_y1+0 
-;glcd_jo.h,443 :: 		y2 = glcd_temp;
+;glcd_pic.h,367 :: 		y2 = glcd_temp;
 	MOVF        GLCD_DRW_REC_SOLID_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_DRW_REC_SOLID_y2+0 
-;glcd_jo.h,444 :: 		}
-L_GLCD_DRW_REC_SOLID26:
-;glcd_jo.h,445 :: 		for(i=x1;i<=x2;i++)
+;glcd_pic.h,368 :: 		}
+L_GLCD_DRW_REC_SOLID28:
+;glcd_pic.h,369 :: 		for(i=x1;i<=x2;i++)
 	MOVF        FARG_GLCD_DRW_REC_SOLID_x1+0, 0 
 	MOVWF       GLCD_DRW_REC_SOLID_i_L0+0 
-L_GLCD_DRW_REC_SOLID27:
+L_GLCD_DRW_REC_SOLID29:
 	MOVF        GLCD_DRW_REC_SOLID_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_SOLID_x2+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_SOLID28
-;glcd_jo.h,446 :: 		for(j=y1;j<=y2;j++)
+	GOTO        L_GLCD_DRW_REC_SOLID30
+;glcd_pic.h,370 :: 		for(j=y1;j<=y2;j++)
 	MOVF        FARG_GLCD_DRW_REC_SOLID_y1+0, 0 
 	MOVWF       GLCD_DRW_REC_SOLID_j_L0+0 
-L_GLCD_DRW_REC_SOLID30:
+L_GLCD_DRW_REC_SOLID32:
 	MOVF        GLCD_DRW_REC_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_REC_SOLID_y2+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_REC_SOLID31
-;glcd_jo.h,448 :: 		if(black_white)
+	GOTO        L_GLCD_DRW_REC_SOLID33
+;glcd_pic.h,372 :: 		if(black_white)
 	MOVF        FARG_GLCD_DRW_REC_SOLID_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_REC_SOLID33
-;glcd_jo.h,449 :: 		GLCD_POINT_DRW(i,j);
+	GOTO        L_GLCD_DRW_REC_SOLID35
+;glcd_pic.h,373 :: 		GLCD_POINT_DRW(i,j);
 	MOVF        GLCD_DRW_REC_SOLID_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        GLCD_DRW_REC_SOLID_j_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_REC_SOLID34
-L_GLCD_DRW_REC_SOLID33:
-;glcd_jo.h,451 :: 		GLCD_POINT_CLR(i,j);
+	GOTO        L_GLCD_DRW_REC_SOLID36
+L_GLCD_DRW_REC_SOLID35:
+;glcd_pic.h,375 :: 		GLCD_POINT_CLR(i,j);
 	MOVF        GLCD_DRW_REC_SOLID_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_REC_SOLID_j_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_REC_SOLID34:
-;glcd_jo.h,446 :: 		for(j=y1;j<=y2;j++)
+L_GLCD_DRW_REC_SOLID36:
+;glcd_pic.h,370 :: 		for(j=y1;j<=y2;j++)
 	INCF        GLCD_DRW_REC_SOLID_j_L0+0, 1 
-;glcd_jo.h,452 :: 		}
-	GOTO        L_GLCD_DRW_REC_SOLID30
-L_GLCD_DRW_REC_SOLID31:
-;glcd_jo.h,445 :: 		for(i=x1;i<=x2;i++)
+;glcd_pic.h,376 :: 		}
+	GOTO        L_GLCD_DRW_REC_SOLID32
+L_GLCD_DRW_REC_SOLID33:
+;glcd_pic.h,369 :: 		for(i=x1;i<=x2;i++)
 	INCF        GLCD_DRW_REC_SOLID_i_L0+0, 1 
-;glcd_jo.h,452 :: 		}
-	GOTO        L_GLCD_DRW_REC_SOLID27
-L_GLCD_DRW_REC_SOLID28:
-;glcd_jo.h,453 :: 		}
+;glcd_pic.h,376 :: 		}
+	GOTO        L_GLCD_DRW_REC_SOLID29
+L_GLCD_DRW_REC_SOLID30:
+;glcd_pic.h,377 :: 		}
 	RETURN      0
 ; end of _GLCD_DRW_REC_SOLID
 
 _GLCD_DRW_LINE:
 
-;glcd_jo.h,465 :: 		void GLCD_DRW_LINE(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2, unsigned char black_white)
-;glcd_jo.h,470 :: 		if(x2 == x1)
+;glcd_pic.h,379 :: 		void GLCD_DRW_LINE(unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2, unsigned char black_white)
+;glcd_pic.h,384 :: 		if(x2 == x1)
 	MOVF        FARG_GLCD_DRW_LINE_x2+0, 0 
 	XORWF       FARG_GLCD_DRW_LINE_x1+0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_LINE35
-;glcd_jo.h,472 :: 		if(y2 >= y1)
+	GOTO        L_GLCD_DRW_LINE37
+;glcd_pic.h,386 :: 		if(y2 >= y1)
 	MOVF        FARG_GLCD_DRW_LINE_y1+0, 0 
-	SUBWF       FARG_GLCD_DRW_LINE_y2+0, 0 
-	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_LINE36
-;glcd_jo.h,473 :: 		for(i=y1;i<=y2;i++)
-	MOVF        FARG_GLCD_DRW_LINE_y1+0, 0 
-	MOVWF       GLCD_DRW_LINE_i_L0+0 
-L_GLCD_DRW_LINE37:
-	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_LINE_y2+0, 0 
 	BTFSS       STATUS+0, 0 
 	GOTO        L_GLCD_DRW_LINE38
-;glcd_jo.h,474 :: 		if(black_white != 0)
+;glcd_pic.h,387 :: 		for(i=y1;i<=y2;i++)
+	MOVF        FARG_GLCD_DRW_LINE_y1+0, 0 
+	MOVWF       GLCD_DRW_LINE_i_L0+0 
+L_GLCD_DRW_LINE39:
+	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
+	SUBWF       FARG_GLCD_DRW_LINE_y2+0, 0 
+	BTFSS       STATUS+0, 0 
+	GOTO        L_GLCD_DRW_LINE40
+;glcd_pic.h,388 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_LINE_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_LINE40
-;glcd_jo.h,475 :: 		GLCD_POINT_DRW(x1,i);
+	GOTO        L_GLCD_DRW_LINE42
+;glcd_pic.h,389 :: 		GLCD_POINT_DRW(x1,i);
 	MOVF        FARG_GLCD_DRW_LINE_x1+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_LINE41
-L_GLCD_DRW_LINE40:
-;glcd_jo.h,477 :: 		GLCD_POINT_CLR(x1,i);
+	GOTO        L_GLCD_DRW_LINE43
+L_GLCD_DRW_LINE42:
+;glcd_pic.h,391 :: 		GLCD_POINT_CLR(x1,i);
 	MOVF        FARG_GLCD_DRW_LINE_x1+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_LINE41:
-;glcd_jo.h,473 :: 		for(i=y1;i<=y2;i++)
+L_GLCD_DRW_LINE43:
+;glcd_pic.h,387 :: 		for(i=y1;i<=y2;i++)
 	INCF        GLCD_DRW_LINE_i_L0+0, 1 
-;glcd_jo.h,477 :: 		GLCD_POINT_CLR(x1,i);
-	GOTO        L_GLCD_DRW_LINE37
+;glcd_pic.h,391 :: 		GLCD_POINT_CLR(x1,i);
+	GOTO        L_GLCD_DRW_LINE39
+L_GLCD_DRW_LINE40:
+	GOTO        L_GLCD_DRW_LINE44
 L_GLCD_DRW_LINE38:
-	GOTO        L_GLCD_DRW_LINE42
-L_GLCD_DRW_LINE36:
-;glcd_jo.h,479 :: 		for(i=y2;i<=y1;i++)
+;glcd_pic.h,393 :: 		for(i=y2;i<=y1;i++)
 	MOVF        FARG_GLCD_DRW_LINE_y2+0, 0 
 	MOVWF       GLCD_DRW_LINE_i_L0+0 
-L_GLCD_DRW_LINE43:
+L_GLCD_DRW_LINE45:
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_LINE_y1+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_LINE44
-;glcd_jo.h,480 :: 		if(black_white != 0)
+	GOTO        L_GLCD_DRW_LINE46
+;glcd_pic.h,394 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_LINE_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_LINE46
-;glcd_jo.h,481 :: 		GLCD_POINT_DRW(x1,i);
+	GOTO        L_GLCD_DRW_LINE48
+;glcd_pic.h,395 :: 		GLCD_POINT_DRW(x1,i);
 	MOVF        FARG_GLCD_DRW_LINE_x1+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_LINE47
-L_GLCD_DRW_LINE46:
-;glcd_jo.h,483 :: 		GLCD_POINT_CLR(x1,i);
+	GOTO        L_GLCD_DRW_LINE49
+L_GLCD_DRW_LINE48:
+;glcd_pic.h,397 :: 		GLCD_POINT_CLR(x1,i);
 	MOVF        FARG_GLCD_DRW_LINE_x1+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_LINE47:
-;glcd_jo.h,479 :: 		for(i=y2;i<=y1;i++)
+L_GLCD_DRW_LINE49:
+;glcd_pic.h,393 :: 		for(i=y2;i<=y1;i++)
 	INCF        GLCD_DRW_LINE_i_L0+0, 1 
-;glcd_jo.h,483 :: 		GLCD_POINT_CLR(x1,i);
-	GOTO        L_GLCD_DRW_LINE43
+;glcd_pic.h,397 :: 		GLCD_POINT_CLR(x1,i);
+	GOTO        L_GLCD_DRW_LINE45
+L_GLCD_DRW_LINE46:
 L_GLCD_DRW_LINE44:
-L_GLCD_DRW_LINE42:
-;glcd_jo.h,484 :: 		}
-	GOTO        L_GLCD_DRW_LINE48
-L_GLCD_DRW_LINE35:
-;glcd_jo.h,487 :: 		a = (float)(y2 - y1) / (float)(x2 - x1);
+;glcd_pic.h,398 :: 		}
+	GOTO        L_GLCD_DRW_LINE50
+L_GLCD_DRW_LINE37:
+;glcd_pic.h,401 :: 		a = (float)(y2 - y1) / (float)(x2 - x1);
 	MOVF        FARG_GLCD_DRW_LINE_y1+0, 0 
 	SUBWF       FARG_GLCD_DRW_LINE_y2+0, 0 
 	MOVWF       R0 
@@ -791,7 +819,7 @@ L_GLCD_DRW_LINE35:
 	MOVWF       GLCD_DRW_LINE_a_L0+2 
 	MOVF        FLOC__GLCD_DRW_LINE+3, 0 
 	MOVWF       GLCD_DRW_LINE_a_L0+3 
-;glcd_jo.h,488 :: 		b = (float)(y2 - a*x2);
+;glcd_pic.h,402 :: 		b = (float)(y2 - a*x2);
 	MOVF        FARG_GLCD_DRW_LINE_x2+0, 0 
 	MOVWF       R0 
 	CALL        _Byte2Double+0, 0
@@ -832,25 +860,25 @@ L_GLCD_DRW_LINE35:
 	MOVWF       GLCD_DRW_LINE_b_L0+2 
 	MOVF        R3, 0 
 	MOVWF       GLCD_DRW_LINE_b_L0+3 
-;glcd_jo.h,490 :: 		if(x2 > x1)
+;glcd_pic.h,404 :: 		if(x2 > x1)
 	MOVF        FARG_GLCD_DRW_LINE_x2+0, 0 
 	SUBWF       FARG_GLCD_DRW_LINE_x1+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_LINE49
-;glcd_jo.h,492 :: 		for(i=x1;i<=x2;i++)
+	GOTO        L_GLCD_DRW_LINE51
+;glcd_pic.h,406 :: 		for(i=x1;i<=x2;i++)
 	MOVF        FARG_GLCD_DRW_LINE_x1+0, 0 
 	MOVWF       GLCD_DRW_LINE_i_L0+0 
-L_GLCD_DRW_LINE50:
+L_GLCD_DRW_LINE52:
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_LINE_x2+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_LINE51
-;glcd_jo.h,493 :: 		if(black_white != 0)
+	GOTO        L_GLCD_DRW_LINE53
+;glcd_pic.h,407 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_LINE_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_LINE53
-;glcd_jo.h,494 :: 		GLCD_POINT_DRW(i,(a*i + b));
+	GOTO        L_GLCD_DRW_LINE55
+;glcd_pic.h,408 :: 		GLCD_POINT_DRW(i,(a*i + b));
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
@@ -878,9 +906,9 @@ L_GLCD_DRW_LINE50:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_LINE54
-L_GLCD_DRW_LINE53:
-;glcd_jo.h,496 :: 		GLCD_POINT_CLR(i,(a*i + b));
+	GOTO        L_GLCD_DRW_LINE56
+L_GLCD_DRW_LINE55:
+;glcd_pic.h,410 :: 		GLCD_POINT_CLR(i,(a*i + b));
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
@@ -908,29 +936,29 @@ L_GLCD_DRW_LINE53:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_LINE54:
-;glcd_jo.h,492 :: 		for(i=x1;i<=x2;i++)
+L_GLCD_DRW_LINE56:
+;glcd_pic.h,406 :: 		for(i=x1;i<=x2;i++)
 	INCF        GLCD_DRW_LINE_i_L0+0, 1 
-;glcd_jo.h,496 :: 		GLCD_POINT_CLR(i,(a*i + b));
-	GOTO        L_GLCD_DRW_LINE50
+;glcd_pic.h,410 :: 		GLCD_POINT_CLR(i,(a*i + b));
+	GOTO        L_GLCD_DRW_LINE52
+L_GLCD_DRW_LINE53:
+;glcd_pic.h,411 :: 		}
+	GOTO        L_GLCD_DRW_LINE57
 L_GLCD_DRW_LINE51:
-;glcd_jo.h,497 :: 		}
-	GOTO        L_GLCD_DRW_LINE55
-L_GLCD_DRW_LINE49:
-;glcd_jo.h,500 :: 		for(i=x2;i<=x1;i++)
+;glcd_pic.h,414 :: 		for(i=x2;i<=x1;i++)
 	MOVF        FARG_GLCD_DRW_LINE_x2+0, 0 
 	MOVWF       GLCD_DRW_LINE_i_L0+0 
-L_GLCD_DRW_LINE56:
+L_GLCD_DRW_LINE58:
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_LINE_x1+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_LINE57
-;glcd_jo.h,501 :: 		if(black_white != 0)
+	GOTO        L_GLCD_DRW_LINE59
+;glcd_pic.h,415 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_LINE_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_LINE59
-;glcd_jo.h,502 :: 		GLCD_POINT_DRW(i,(a*i + b));
+	GOTO        L_GLCD_DRW_LINE61
+;glcd_pic.h,416 :: 		GLCD_POINT_DRW(i,(a*i + b));
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
@@ -958,9 +986,9 @@ L_GLCD_DRW_LINE56:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_LINE60
-L_GLCD_DRW_LINE59:
-;glcd_jo.h,504 :: 		GLCD_POINT_CLR(i,(a*i + b));
+	GOTO        L_GLCD_DRW_LINE62
+L_GLCD_DRW_LINE61:
+;glcd_pic.h,418 :: 		GLCD_POINT_CLR(i,(a*i + b));
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_LINE_i_L0+0, 0 
@@ -988,131 +1016,39 @@ L_GLCD_DRW_LINE59:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_LINE60:
-;glcd_jo.h,500 :: 		for(i=x2;i<=x1;i++)
+L_GLCD_DRW_LINE62:
+;glcd_pic.h,414 :: 		for(i=x2;i<=x1;i++)
 	INCF        GLCD_DRW_LINE_i_L0+0, 1 
-;glcd_jo.h,504 :: 		GLCD_POINT_CLR(i,(a*i + b));
-	GOTO        L_GLCD_DRW_LINE56
+;glcd_pic.h,418 :: 		GLCD_POINT_CLR(i,(a*i + b));
+	GOTO        L_GLCD_DRW_LINE58
+L_GLCD_DRW_LINE59:
+;glcd_pic.h,419 :: 		}
 L_GLCD_DRW_LINE57:
-;glcd_jo.h,505 :: 		}
-L_GLCD_DRW_LINE55:
-;glcd_jo.h,506 :: 		}
-L_GLCD_DRW_LINE48:
-;glcd_jo.h,507 :: 		}
+;glcd_pic.h,420 :: 		}
+L_GLCD_DRW_LINE50:
+;glcd_pic.h,421 :: 		}
 	RETURN      0
 ; end of _GLCD_DRW_LINE
 
 _GLCD_DRW_VECTOR:
 
-;glcd_jo.h,518 :: 		void GLCD_DRW_VECTOR(unsigned char x1, unsigned char y1, unsigned int angle, unsigned char length, unsigned char black_white)
-;glcd_jo.h,524 :: 		if(angle == 0)
-	MOVLW       0
-	XORWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
-	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_VECTOR165
-	MOVLW       0
-	XORWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
-L__GLCD_DRW_VECTOR165:
-	BTFSS       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR61
-;glcd_jo.h,526 :: 		if(black_white != 0)
-	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 0 
-	XORLW       0
-	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR62
-;glcd_jo.h,527 :: 		GLCD_DRW_LINE(x1,y1,x1,y1-length,1);
-	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
-	SUBWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
-	MOVLW       1
-	MOVWF       FARG_GLCD_DRW_LINE_black_white+0 
-	CALL        _GLCD_DRW_LINE+0, 0
-	GOTO        L_GLCD_DRW_VECTOR63
-L_GLCD_DRW_VECTOR62:
-;glcd_jo.h,529 :: 		GLCD_DRW_LINE(x1,y1,x1,y1-length,0);
-	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
-	SUBWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
-	CLRF        FARG_GLCD_DRW_LINE_black_white+0 
-	CALL        _GLCD_DRW_LINE+0, 0
-L_GLCD_DRW_VECTOR63:
-;glcd_jo.h,530 :: 		}
-	GOTO        L_GLCD_DRW_VECTOR64
-L_GLCD_DRW_VECTOR61:
-;glcd_jo.h,531 :: 		else if(angle == 90)
-	MOVLW       0
-	XORWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
-	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_VECTOR166
-	MOVLW       90
-	XORWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
-L__GLCD_DRW_VECTOR166:
-	BTFSS       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR65
-;glcd_jo.h,533 :: 		if(black_white != 0)
-	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 0 
-	XORLW       0
-	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR66
-;glcd_jo.h,534 :: 		GLCD_DRW_LINE(x1,y1,x1+length,y1,1);
-	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
-	ADDWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
-	MOVLW       1
-	MOVWF       FARG_GLCD_DRW_LINE_black_white+0 
-	CALL        _GLCD_DRW_LINE+0, 0
-	GOTO        L_GLCD_DRW_VECTOR67
-L_GLCD_DRW_VECTOR66:
-;glcd_jo.h,536 :: 		GLCD_DRW_LINE(x1,y1,x1+length,y1,0);
-	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
-	ADDWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
-	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
-	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
-	CLRF        FARG_GLCD_DRW_LINE_black_white+0 
-	CALL        _GLCD_DRW_LINE+0, 0
-L_GLCD_DRW_VECTOR67:
-;glcd_jo.h,537 :: 		}
-	GOTO        L_GLCD_DRW_VECTOR68
-L_GLCD_DRW_VECTOR65:
-;glcd_jo.h,538 :: 		else if(angle == 180)
+;glcd_pic.h,423 :: 		void GLCD_DRW_VECTOR(unsigned char x1, unsigned char y1, unsigned int angle, unsigned char length, unsigned char black_white)
+;glcd_pic.h,429 :: 		if(angle == 0)
 	MOVLW       0
 	XORWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
 	BTFSS       STATUS+0, 2 
 	GOTO        L__GLCD_DRW_VECTOR167
-	MOVLW       180
+	MOVLW       0
 	XORWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
 L__GLCD_DRW_VECTOR167:
 	BTFSS       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR69
-;glcd_jo.h,540 :: 		if(black_white != 0)
+	GOTO        L_GLCD_DRW_VECTOR63
+;glcd_pic.h,431 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR70
-;glcd_jo.h,541 :: 		GLCD_DRW_LINE(x1,y1,x1,y1+length,1);
+	GOTO        L_GLCD_DRW_VECTOR64
+;glcd_pic.h,432 :: 		GLCD_DRW_LINE(x1,y1,x1,y1-length,1);
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
@@ -1120,14 +1056,14 @@ L__GLCD_DRW_VECTOR167:
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
-	ADDWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	SUBWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
 	MOVLW       1
 	MOVWF       FARG_GLCD_DRW_LINE_black_white+0 
 	CALL        _GLCD_DRW_LINE+0, 0
-	GOTO        L_GLCD_DRW_VECTOR71
-L_GLCD_DRW_VECTOR70:
-;glcd_jo.h,543 :: 		GLCD_DRW_LINE(x1,y1,x1,y1+length,0);
+	GOTO        L_GLCD_DRW_VECTOR65
+L_GLCD_DRW_VECTOR64:
+;glcd_pic.h,434 :: 		GLCD_DRW_LINE(x1,y1,x1,y1-length,0);
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
@@ -1135,30 +1071,122 @@ L_GLCD_DRW_VECTOR70:
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
-	ADDWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	SUBWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
 	CLRF        FARG_GLCD_DRW_LINE_black_white+0 
 	CALL        _GLCD_DRW_LINE+0, 0
-L_GLCD_DRW_VECTOR71:
-;glcd_jo.h,544 :: 		}
-	GOTO        L_GLCD_DRW_VECTOR72
-L_GLCD_DRW_VECTOR69:
-;glcd_jo.h,545 :: 		else if(angle == 270)
-	MOVF        FARG_GLCD_DRW_VECTOR_angle+1, 0 
-	XORLW       1
+L_GLCD_DRW_VECTOR65:
+;glcd_pic.h,435 :: 		}
+	GOTO        L_GLCD_DRW_VECTOR66
+L_GLCD_DRW_VECTOR63:
+;glcd_pic.h,436 :: 		else if(angle == 90)
+	MOVLW       0
+	XORWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
 	BTFSS       STATUS+0, 2 
 	GOTO        L__GLCD_DRW_VECTOR168
-	MOVLW       14
+	MOVLW       90
 	XORWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
 L__GLCD_DRW_VECTOR168:
 	BTFSS       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR73
-;glcd_jo.h,547 :: 		if(black_white != 0)
+	GOTO        L_GLCD_DRW_VECTOR67
+;glcd_pic.h,438 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
+	GOTO        L_GLCD_DRW_VECTOR68
+;glcd_pic.h,439 :: 		GLCD_DRW_LINE(x1,y1,x1+length,y1,1);
+	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
+	ADDWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
+	MOVLW       1
+	MOVWF       FARG_GLCD_DRW_LINE_black_white+0 
+	CALL        _GLCD_DRW_LINE+0, 0
+	GOTO        L_GLCD_DRW_VECTOR69
+L_GLCD_DRW_VECTOR68:
+;glcd_pic.h,441 :: 		GLCD_DRW_LINE(x1,y1,x1+length,y1,0);
+	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
+	ADDWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
+	CLRF        FARG_GLCD_DRW_LINE_black_white+0 
+	CALL        _GLCD_DRW_LINE+0, 0
+L_GLCD_DRW_VECTOR69:
+;glcd_pic.h,442 :: 		}
+	GOTO        L_GLCD_DRW_VECTOR70
+L_GLCD_DRW_VECTOR67:
+;glcd_pic.h,443 :: 		else if(angle == 180)
+	MOVLW       0
+	XORWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
+	BTFSS       STATUS+0, 2 
+	GOTO        L__GLCD_DRW_VECTOR169
+	MOVLW       180
+	XORWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
+L__GLCD_DRW_VECTOR169:
+	BTFSS       STATUS+0, 2 
+	GOTO        L_GLCD_DRW_VECTOR71
+;glcd_pic.h,445 :: 		if(black_white != 0)
+	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 0 
+	XORLW       0
+	BTFSC       STATUS+0, 2 
+	GOTO        L_GLCD_DRW_VECTOR72
+;glcd_pic.h,446 :: 		GLCD_DRW_LINE(x1,y1,x1,y1+length,1);
+	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
+	ADDWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
+	MOVLW       1
+	MOVWF       FARG_GLCD_DRW_LINE_black_white+0 
+	CALL        _GLCD_DRW_LINE+0, 0
+	GOTO        L_GLCD_DRW_VECTOR73
+L_GLCD_DRW_VECTOR72:
+;glcd_pic.h,448 :: 		GLCD_DRW_LINE(x1,y1,x1,y1+length,0);
+	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y1+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_x2+0 
+	MOVF        FARG_GLCD_DRW_VECTOR_length+0, 0 
+	ADDWF       FARG_GLCD_DRW_VECTOR_y1+0, 0 
+	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
+	CLRF        FARG_GLCD_DRW_LINE_black_white+0 
+	CALL        _GLCD_DRW_LINE+0, 0
+L_GLCD_DRW_VECTOR73:
+;glcd_pic.h,449 :: 		}
 	GOTO        L_GLCD_DRW_VECTOR74
-;glcd_jo.h,548 :: 		GLCD_DRW_LINE(x1,y1,x1-length,y1,1);
+L_GLCD_DRW_VECTOR71:
+;glcd_pic.h,450 :: 		else if(angle == 270)
+	MOVF        FARG_GLCD_DRW_VECTOR_angle+1, 0 
+	XORLW       1
+	BTFSS       STATUS+0, 2 
+	GOTO        L__GLCD_DRW_VECTOR170
+	MOVLW       14
+	XORWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
+L__GLCD_DRW_VECTOR170:
+	BTFSS       STATUS+0, 2 
+	GOTO        L_GLCD_DRW_VECTOR75
+;glcd_pic.h,452 :: 		if(black_white != 0)
+	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 0 
+	XORLW       0
+	BTFSC       STATUS+0, 2 
+	GOTO        L_GLCD_DRW_VECTOR76
+;glcd_pic.h,453 :: 		GLCD_DRW_LINE(x1,y1,x1-length,y1,1);
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
@@ -1171,9 +1199,9 @@ L__GLCD_DRW_VECTOR168:
 	MOVLW       1
 	MOVWF       FARG_GLCD_DRW_LINE_black_white+0 
 	CALL        _GLCD_DRW_LINE+0, 0
-	GOTO        L_GLCD_DRW_VECTOR75
-L_GLCD_DRW_VECTOR74:
-;glcd_jo.h,550 :: 		GLCD_DRW_LINE(x1,y1,x1-length,y1,0);
+	GOTO        L_GLCD_DRW_VECTOR77
+L_GLCD_DRW_VECTOR76:
+;glcd_pic.h,455 :: 		GLCD_DRW_LINE(x1,y1,x1-length,y1,0);
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       FARG_GLCD_DRW_LINE_x1+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_y1+0, 0 
@@ -1185,21 +1213,21 @@ L_GLCD_DRW_VECTOR74:
 	MOVWF       FARG_GLCD_DRW_LINE_y2+0 
 	CLRF        FARG_GLCD_DRW_LINE_black_white+0 
 	CALL        _GLCD_DRW_LINE+0, 0
+L_GLCD_DRW_VECTOR77:
+;glcd_pic.h,456 :: 		}
+	GOTO        L_GLCD_DRW_VECTOR78
 L_GLCD_DRW_VECTOR75:
-;glcd_jo.h,551 :: 		}
-	GOTO        L_GLCD_DRW_VECTOR76
-L_GLCD_DRW_VECTOR73:
-;glcd_jo.h,554 :: 		if(angle < 180)
+;glcd_pic.h,459 :: 		if(angle < 180)
 	MOVLW       0
 	SUBWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_VECTOR169
+	GOTO        L__GLCD_DRW_VECTOR171
 	MOVLW       180
 	SUBWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
-L__GLCD_DRW_VECTOR169:
+L__GLCD_DRW_VECTOR171:
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_VECTOR77
-;glcd_jo.h,555 :: 		goc = ((double)(angle*3.14)/180);
+	GOTO        L_GLCD_DRW_VECTOR79
+;glcd_pic.h,460 :: 		goc = ((double)(angle*M_PI)/180);
 	MOVF        FARG_GLCD_DRW_VECTOR_angle+0, 0 
 	MOVWF       R0 
 	MOVF        FARG_GLCD_DRW_VECTOR_angle+1, 0 
@@ -1231,9 +1259,9 @@ L__GLCD_DRW_VECTOR169:
 	MOVWF       GLCD_DRW_VECTOR_goc_L0+2 
 	MOVF        R3, 0 
 	MOVWF       GLCD_DRW_VECTOR_goc_L0+3 
-	GOTO        L_GLCD_DRW_VECTOR78
-L_GLCD_DRW_VECTOR77:
-;glcd_jo.h,557 :: 		goc = ((double)((360 - angle)*3.14)/180);
+	GOTO        L_GLCD_DRW_VECTOR80
+L_GLCD_DRW_VECTOR79:
+;glcd_pic.h,462 :: 		goc = ((double)((360 - angle)*M_PI)/180);
 	MOVF        FARG_GLCD_DRW_VECTOR_angle+0, 0 
 	SUBLW       104
 	MOVWF       R0 
@@ -1268,8 +1296,8 @@ L_GLCD_DRW_VECTOR77:
 	MOVWF       GLCD_DRW_VECTOR_goc_L0+2 
 	MOVF        R3, 0 
 	MOVWF       GLCD_DRW_VECTOR_goc_L0+3 
-L_GLCD_DRW_VECTOR78:
-;glcd_jo.h,559 :: 		x_max = (char)(length*sin(goc));
+L_GLCD_DRW_VECTOR80:
+;glcd_pic.h,464 :: 		x_max = (char)(length*sin(goc));
 	MOVF        GLCD_DRW_VECTOR_goc_L0+0, 0 
 	MOVWF       FARG_sin_f+0 
 	MOVF        GLCD_DRW_VECTOR_goc_L0+1, 0 
@@ -1302,7 +1330,7 @@ L_GLCD_DRW_VECTOR78:
 	CALL        _Double2Byte+0, 0
 	MOVF        R0, 0 
 	MOVWF       GLCD_DRW_VECTOR_x_max_L0+0 
-;glcd_jo.h,561 :: 		a = 1/tan(goc);
+;glcd_pic.h,466 :: 		a = 1/tan(goc);
 	MOVF        GLCD_DRW_VECTOR_goc_L0+0, 0 
 	MOVWF       FARG_tan_x+0 
 	MOVF        GLCD_DRW_VECTOR_goc_L0+1, 0 
@@ -1337,22 +1365,22 @@ L_GLCD_DRW_VECTOR78:
 	MOVWF       GLCD_DRW_VECTOR_a_L0+2 
 	MOVF        R3, 0 
 	MOVWF       GLCD_DRW_VECTOR_a_L0+3 
-;glcd_jo.h,562 :: 		if(angle < 180)
+;glcd_pic.h,467 :: 		if(angle < 180)
 	MOVLW       0
 	SUBWF       FARG_GLCD_DRW_VECTOR_angle+1, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_VECTOR170
+	GOTO        L__GLCD_DRW_VECTOR172
 	MOVLW       180
 	SUBWF       FARG_GLCD_DRW_VECTOR_angle+0, 0 
-L__GLCD_DRW_VECTOR170:
+L__GLCD_DRW_VECTOR172:
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_VECTOR79
-;glcd_jo.h,563 :: 		for(i=x1;i<=x1+x_max;i++)
+	GOTO        L_GLCD_DRW_VECTOR81
+;glcd_pic.h,468 :: 		for(i=x1;i<=x1+x_max;i++)
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       GLCD_DRW_VECTOR_i_L0+0 
 	MOVLW       0
 	MOVWF       GLCD_DRW_VECTOR_i_L0+1 
-L_GLCD_DRW_VECTOR80:
+L_GLCD_DRW_VECTOR82:
 	MOVF        GLCD_DRW_VECTOR_x_max_L0+0, 0 
 	ADDWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       R1 
@@ -1362,17 +1390,17 @@ L_GLCD_DRW_VECTOR80:
 	MOVF        GLCD_DRW_VECTOR_i_L0+1, 0 
 	SUBWF       R2, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_VECTOR171
+	GOTO        L__GLCD_DRW_VECTOR173
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
 	SUBWF       R1, 0 
-L__GLCD_DRW_VECTOR171:
+L__GLCD_DRW_VECTOR173:
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_VECTOR81
-;glcd_jo.h,565 :: 		if(black_white)
+	GOTO        L_GLCD_DRW_VECTOR83
+;glcd_pic.h,470 :: 		if(black_white)
 	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR83
-;glcd_jo.h,566 :: 		GLCD_POINT_DRW(i,(unsigned char)(y1 - a*(i-x1)));
+	GOTO        L_GLCD_DRW_VECTOR85
+;glcd_pic.h,471 :: 		GLCD_POINT_DRW(i,(unsigned char)(y1 - a*(i-x1)));
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
@@ -1415,9 +1443,9 @@ L__GLCD_DRW_VECTOR171:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_VECTOR84
-L_GLCD_DRW_VECTOR83:
-;glcd_jo.h,568 :: 		GLCD_POINT_CLR(i,(unsigned char)(y1 - a*(i-x1)));
+	GOTO        L_GLCD_DRW_VECTOR86
+L_GLCD_DRW_VECTOR85:
+;glcd_pic.h,473 :: 		GLCD_POINT_CLR(i,(unsigned char)(y1 - a*(i-x1)));
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        FARG_GLCD_DRW_VECTOR_x1+0, 0 
@@ -1460,39 +1488,39 @@ L_GLCD_DRW_VECTOR83:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_VECTOR84:
-;glcd_jo.h,563 :: 		for(i=x1;i<=x1+x_max;i++)
+L_GLCD_DRW_VECTOR86:
+;glcd_pic.h,468 :: 		for(i=x1;i<=x1+x_max;i++)
 	INFSNZ      GLCD_DRW_VECTOR_i_L0+0, 1 
 	INCF        GLCD_DRW_VECTOR_i_L0+1, 1 
-;glcd_jo.h,569 :: 		}
-	GOTO        L_GLCD_DRW_VECTOR80
+;glcd_pic.h,474 :: 		}
+	GOTO        L_GLCD_DRW_VECTOR82
+L_GLCD_DRW_VECTOR83:
+	GOTO        L_GLCD_DRW_VECTOR87
 L_GLCD_DRW_VECTOR81:
-	GOTO        L_GLCD_DRW_VECTOR85
-L_GLCD_DRW_VECTOR79:
-;glcd_jo.h,571 :: 		for(i=(x1-x_max);i<=x1;i++)
+;glcd_pic.h,476 :: 		for(i=(x1-x_max);i<=x1;i++)
 	MOVF        GLCD_DRW_VECTOR_x_max_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
 	MOVWF       GLCD_DRW_VECTOR_i_L0+0 
 	CLRF        GLCD_DRW_VECTOR_i_L0+1 
 	MOVLW       0
 	SUBWFB      GLCD_DRW_VECTOR_i_L0+1, 1 
-L_GLCD_DRW_VECTOR86:
+L_GLCD_DRW_VECTOR88:
 	MOVLW       0
 	MOVWF       R0 
 	MOVF        GLCD_DRW_VECTOR_i_L0+1, 0 
 	SUBWF       R0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_VECTOR172
+	GOTO        L__GLCD_DRW_VECTOR174
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_VECTOR_x1+0, 0 
-L__GLCD_DRW_VECTOR172:
+L__GLCD_DRW_VECTOR174:
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_VECTOR87
-;glcd_jo.h,573 :: 		if(black_white)
+	GOTO        L_GLCD_DRW_VECTOR89
+;glcd_pic.h,478 :: 		if(black_white)
 	MOVF        FARG_GLCD_DRW_VECTOR_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_VECTOR89
-;glcd_jo.h,574 :: 		GLCD_POINT_DRW(i,(unsigned char)(y1 - a*(x1-i)));
+	GOTO        L_GLCD_DRW_VECTOR91
+;glcd_pic.h,479 :: 		GLCD_POINT_DRW(i,(unsigned char)(y1 - a*(x1-i)));
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
@@ -1536,9 +1564,9 @@ L__GLCD_DRW_VECTOR172:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_y+0 
 	CALL        _GLCD_POINT_DRW+0, 0
-	GOTO        L_GLCD_DRW_VECTOR90
-L_GLCD_DRW_VECTOR89:
-;glcd_jo.h,576 :: 		GLCD_POINT_CLR(i,(unsigned char)(y1 - a*(x1-i)));
+	GOTO        L_GLCD_DRW_VECTOR92
+L_GLCD_DRW_VECTOR91:
+;glcd_pic.h,481 :: 		GLCD_POINT_CLR(i,(unsigned char)(y1 - a*(x1-i)));
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
 	MOVF        GLCD_DRW_VECTOR_i_L0+0, 0 
@@ -1582,43 +1610,43 @@ L_GLCD_DRW_VECTOR89:
 	MOVF        R0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_y+0 
 	CALL        _GLCD_POINT_CLR+0, 0
-L_GLCD_DRW_VECTOR90:
-;glcd_jo.h,571 :: 		for(i=(x1-x_max);i<=x1;i++)
+L_GLCD_DRW_VECTOR92:
+;glcd_pic.h,476 :: 		for(i=(x1-x_max);i<=x1;i++)
 	INFSNZ      GLCD_DRW_VECTOR_i_L0+0, 1 
 	INCF        GLCD_DRW_VECTOR_i_L0+1, 1 
-;glcd_jo.h,577 :: 		}
-	GOTO        L_GLCD_DRW_VECTOR86
+;glcd_pic.h,482 :: 		}
+	GOTO        L_GLCD_DRW_VECTOR88
+L_GLCD_DRW_VECTOR89:
 L_GLCD_DRW_VECTOR87:
-L_GLCD_DRW_VECTOR85:
-;glcd_jo.h,578 :: 		}
-L_GLCD_DRW_VECTOR76:
-L_GLCD_DRW_VECTOR72:
-L_GLCD_DRW_VECTOR68:
-L_GLCD_DRW_VECTOR64:
-;glcd_jo.h,579 :: 		}
+;glcd_pic.h,483 :: 		}
+L_GLCD_DRW_VECTOR78:
+L_GLCD_DRW_VECTOR74:
+L_GLCD_DRW_VECTOR70:
+L_GLCD_DRW_VECTOR66:
+;glcd_pic.h,484 :: 		}
 	RETURN      0
 ; end of _GLCD_DRW_VECTOR
 
 _GLCD_DRW_CIRCLE_EMPTY:
 
-;glcd_jo.h,590 :: 		void GLCD_DRW_CIRCLE_EMPTY(unsigned char x, unsigned char y, unsigned char r, unsigned char black_white)
-;glcd_jo.h,594 :: 		r2 = r*r;
+;glcd_pic.h,486 :: 		void GLCD_DRW_CIRCLE_EMPTY(unsigned char x, unsigned char y, unsigned char r, unsigned char black_white)
+;glcd_pic.h,490 :: 		r2 = r*r;
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	MULWF       FARG_GLCD_DRW_CIRCLE_EMPTY_r+0 
 	MOVF        PRODL+0, 0 
 	MOVWF       GLCD_DRW_CIRCLE_EMPTY_r2_L0+0 
 	MOVF        PRODH+0, 0 
 	MOVWF       GLCD_DRW_CIRCLE_EMPTY_r2_L0+1 
-;glcd_jo.h,595 :: 		for(i=0;i<=r;i++)
+;glcd_pic.h,491 :: 		for(i=0;i<=r;i++)
 	CLRF        GLCD_DRW_CIRCLE_EMPTY_i_L0+0 
-L_GLCD_DRW_CIRCLE_EMPTY91:
+L_GLCD_DRW_CIRCLE_EMPTY93:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_CIRCLE_EMPTY92
-;glcd_jo.h,597 :: 		j = 0;
+	GOTO        L_GLCD_DRW_CIRCLE_EMPTY94
+;glcd_pic.h,493 :: 		j = 0;
 	CLRF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0 
-;glcd_jo.h,598 :: 		ri2 = (r-i)*(r-i);
+;glcd_pic.h,494 :: 		ri2 = (r-i)*(r-i);
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	MOVWF       R0 
@@ -1634,8 +1662,8 @@ L_GLCD_DRW_CIRCLE_EMPTY91:
 	MOVWF       GLCD_DRW_CIRCLE_EMPTY_ri2_L0+0 
 	MOVF        R1, 0 
 	MOVWF       GLCD_DRW_CIRCLE_EMPTY_ri2_L0+1 
-;glcd_jo.h,600 :: 		while((ri2 + (r-j)*(r-j)) > r2)
-L_GLCD_DRW_CIRCLE_EMPTY94:
+;glcd_pic.h,496 :: 		while((ri2 + (r-j)*(r-j)) > r2)
+L_GLCD_DRW_CIRCLE_EMPTY96:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	MOVWF       R0 
@@ -1656,22 +1684,22 @@ L_GLCD_DRW_CIRCLE_EMPTY94:
 	MOVF        R3, 0 
 	SUBWF       GLCD_DRW_CIRCLE_EMPTY_r2_L0+1, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_CIRCLE_EMPTY173
+	GOTO        L__GLCD_DRW_CIRCLE_EMPTY175
 	MOVF        R2, 0 
 	SUBWF       GLCD_DRW_CIRCLE_EMPTY_r2_L0+0, 0 
-L__GLCD_DRW_CIRCLE_EMPTY173:
+L__GLCD_DRW_CIRCLE_EMPTY175:
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_CIRCLE_EMPTY95
-;glcd_jo.h,602 :: 		j++;
+	GOTO        L_GLCD_DRW_CIRCLE_EMPTY97
+;glcd_pic.h,498 :: 		j++;
 	INCF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 1 
-;glcd_jo.h,603 :: 		}
-	GOTO        L_GLCD_DRW_CIRCLE_EMPTY94
-L_GLCD_DRW_CIRCLE_EMPTY95:
-;glcd_jo.h,605 :: 		if(black_white)
+;glcd_pic.h,499 :: 		}
+	GOTO        L_GLCD_DRW_CIRCLE_EMPTY96
+L_GLCD_DRW_CIRCLE_EMPTY97:
+;glcd_pic.h,501 :: 		if(black_white)
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_CIRCLE_EMPTY96
-;glcd_jo.h,607 :: 		GLCD_POINT_DRW(x-r+i,y-r+j);
+	GOTO        L_GLCD_DRW_CIRCLE_EMPTY98
+;glcd_pic.h,503 :: 		GLCD_POINT_DRW(x-r+i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1683,7 +1711,7 @@ L_GLCD_DRW_CIRCLE_EMPTY95:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,608 :: 		GLCD_POINT_DRW(x-r+i,y+r-j);
+;glcd_pic.h,504 :: 		GLCD_POINT_DRW(x-r+i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1695,7 +1723,7 @@ L_GLCD_DRW_CIRCLE_EMPTY95:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,609 :: 		GLCD_POINT_DRW(x+r-i,y+r-j);
+;glcd_pic.h,505 :: 		GLCD_POINT_DRW(x+r-i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1707,7 +1735,7 @@ L_GLCD_DRW_CIRCLE_EMPTY95:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,610 :: 		GLCD_POINT_DRW(x+r-i,y-r+j);
+;glcd_pic.h,506 :: 		GLCD_POINT_DRW(x+r-i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1719,10 +1747,10 @@ L_GLCD_DRW_CIRCLE_EMPTY95:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,611 :: 		}
-	GOTO        L_GLCD_DRW_CIRCLE_EMPTY97
-L_GLCD_DRW_CIRCLE_EMPTY96:
-;glcd_jo.h,614 :: 		GLCD_POINT_CLR(x-r+i,y-r+j);
+;glcd_pic.h,507 :: 		}
+	GOTO        L_GLCD_DRW_CIRCLE_EMPTY99
+L_GLCD_DRW_CIRCLE_EMPTY98:
+;glcd_pic.h,510 :: 		GLCD_POINT_CLR(x-r+i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1734,7 +1762,7 @@ L_GLCD_DRW_CIRCLE_EMPTY96:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,615 :: 		GLCD_POINT_CLR(x-r+i,y+r-j);
+;glcd_pic.h,511 :: 		GLCD_POINT_CLR(x-r+i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1746,7 +1774,7 @@ L_GLCD_DRW_CIRCLE_EMPTY96:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,616 :: 		GLCD_POINT_CLR(x+r-i,y+r-j);
+;glcd_pic.h,512 :: 		GLCD_POINT_CLR(x+r-i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1758,7 +1786,7 @@ L_GLCD_DRW_CIRCLE_EMPTY96:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,617 :: 		GLCD_POINT_CLR(x+r-i,y-r+j);
+;glcd_pic.h,513 :: 		GLCD_POINT_CLR(x+r-i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_EMPTY_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_EMPTY_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1770,35 +1798,35 @@ L_GLCD_DRW_CIRCLE_EMPTY96:
 	MOVF        GLCD_DRW_CIRCLE_EMPTY_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,618 :: 		}
-L_GLCD_DRW_CIRCLE_EMPTY97:
-;glcd_jo.h,595 :: 		for(i=0;i<=r;i++)
+;glcd_pic.h,514 :: 		}
+L_GLCD_DRW_CIRCLE_EMPTY99:
+;glcd_pic.h,491 :: 		for(i=0;i<=r;i++)
 	INCF        GLCD_DRW_CIRCLE_EMPTY_i_L0+0, 1 
-;glcd_jo.h,619 :: 		}
-	GOTO        L_GLCD_DRW_CIRCLE_EMPTY91
-L_GLCD_DRW_CIRCLE_EMPTY92:
-;glcd_jo.h,620 :: 		}
+;glcd_pic.h,515 :: 		}
+	GOTO        L_GLCD_DRW_CIRCLE_EMPTY93
+L_GLCD_DRW_CIRCLE_EMPTY94:
+;glcd_pic.h,516 :: 		}
 	RETURN      0
 ; end of _GLCD_DRW_CIRCLE_EMPTY
 
 _GLCD_DRW_CIRCLE_SOLID:
 
-;glcd_jo.h,631 :: 		void GLCD_DRW_CIRCLE_SOLID(unsigned char x, unsigned char y, unsigned char r, unsigned char black_white)
-;glcd_jo.h,635 :: 		r2 = r*r;
+;glcd_pic.h,517 :: 		void GLCD_DRW_CIRCLE_SOLID(unsigned char x, unsigned char y, unsigned char r, unsigned char black_white)
+;glcd_pic.h,521 :: 		r2 = r*r;
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	MULWF       FARG_GLCD_DRW_CIRCLE_SOLID_r+0 
 	MOVF        PRODL+0, 0 
 	MOVWF       GLCD_DRW_CIRCLE_SOLID_r2_L0+0 
 	MOVF        PRODH+0, 0 
 	MOVWF       GLCD_DRW_CIRCLE_SOLID_r2_L0+1 
-;glcd_jo.h,636 :: 		for(i=0;i<=r;i++)
+;glcd_pic.h,522 :: 		for(i=0;i<=r;i++)
 	CLRF        GLCD_DRW_CIRCLE_SOLID_i_L0+0 
-L_GLCD_DRW_CIRCLE_SOLID98:
+L_GLCD_DRW_CIRCLE_SOLID100:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID99
-;glcd_jo.h,638 :: 		ri2 = (r-i)*(r-i);
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID101
+;glcd_pic.h,524 :: 		ri2 = (r-i)*(r-i);
 	MOVF        GLCD_DRW_CIRCLE_SOLID_i_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	MOVWF       R0 
@@ -1814,14 +1842,14 @@ L_GLCD_DRW_CIRCLE_SOLID98:
 	MOVWF       GLCD_DRW_CIRCLE_SOLID_ri2_L0+0 
 	MOVF        R1, 0 
 	MOVWF       GLCD_DRW_CIRCLE_SOLID_ri2_L0+1 
-;glcd_jo.h,639 :: 		for(j=0;j<=r;j++)
+;glcd_pic.h,525 :: 		for(j=0;j<=r;j++)
 	CLRF        GLCD_DRW_CIRCLE_SOLID_j_L0+0 
-L_GLCD_DRW_CIRCLE_SOLID101:
+L_GLCD_DRW_CIRCLE_SOLID103:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID102
-;glcd_jo.h,641 :: 		if((ri2 + (r-j)*(r-j)) <= r2)
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID104
+;glcd_pic.h,527 :: 		if((ri2 + (r-j)*(r-j)) <= r2)
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	MOVWF       R0 
@@ -1842,18 +1870,18 @@ L_GLCD_DRW_CIRCLE_SOLID101:
 	MOVF        R3, 0 
 	SUBWF       GLCD_DRW_CIRCLE_SOLID_r2_L0+1, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_DRW_CIRCLE_SOLID174
+	GOTO        L__GLCD_DRW_CIRCLE_SOLID176
 	MOVF        R2, 0 
 	SUBWF       GLCD_DRW_CIRCLE_SOLID_r2_L0+0, 0 
-L__GLCD_DRW_CIRCLE_SOLID174:
+L__GLCD_DRW_CIRCLE_SOLID176:
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID104
-;glcd_jo.h,643 :: 		if(black_white != 0)
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID106
+;glcd_pic.h,529 :: 		if(black_white != 0)
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_black_white+0, 0 
 	XORLW       0
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID105
-;glcd_jo.h,645 :: 		GLCD_POINT_DRW(x-r+i,y-r+j);
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID107
+;glcd_pic.h,531 :: 		GLCD_POINT_DRW(x-r+i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1865,7 +1893,7 @@ L__GLCD_DRW_CIRCLE_SOLID174:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,646 :: 		GLCD_POINT_DRW(x-r+i,y+r-j);
+;glcd_pic.h,532 :: 		GLCD_POINT_DRW(x-r+i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1877,7 +1905,7 @@ L__GLCD_DRW_CIRCLE_SOLID174:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,647 :: 		GLCD_POINT_DRW(x+r-i,y+r-j);
+;glcd_pic.h,533 :: 		GLCD_POINT_DRW(x+r-i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1889,7 +1917,7 @@ L__GLCD_DRW_CIRCLE_SOLID174:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,648 :: 		GLCD_POINT_DRW(x+r-i,y-r+j);
+;glcd_pic.h,534 :: 		GLCD_POINT_DRW(x+r-i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_DRW_x+0 
@@ -1901,10 +1929,10 @@ L__GLCD_DRW_CIRCLE_SOLID174:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_DRW_y+0, 1 
 	CALL        _GLCD_POINT_DRW+0, 0
-;glcd_jo.h,649 :: 		}
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID106
-L_GLCD_DRW_CIRCLE_SOLID105:
-;glcd_jo.h,652 :: 		GLCD_POINT_CLR(x-r+i,y-r+j);
+;glcd_pic.h,535 :: 		}
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID108
+L_GLCD_DRW_CIRCLE_SOLID107:
+;glcd_pic.h,538 :: 		GLCD_POINT_CLR(x-r+i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1916,7 +1944,7 @@ L_GLCD_DRW_CIRCLE_SOLID105:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,653 :: 		GLCD_POINT_CLR(x-r+i,y+r-j);
+;glcd_pic.h,539 :: 		GLCD_POINT_CLR(x-r+i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	SUBWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1928,7 +1956,7 @@ L_GLCD_DRW_CIRCLE_SOLID105:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,654 :: 		GLCD_POINT_CLR(x+r-i,y+r-j);
+;glcd_pic.h,540 :: 		GLCD_POINT_CLR(x+r-i,y+r-j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1940,7 +1968,7 @@ L_GLCD_DRW_CIRCLE_SOLID105:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	SUBWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,655 :: 		GLCD_POINT_CLR(x+r-i,y-r+j);
+;glcd_pic.h,541 :: 		GLCD_POINT_CLR(x+r-i,y-r+j);
 	MOVF        FARG_GLCD_DRW_CIRCLE_SOLID_r+0, 0 
 	ADDWF       FARG_GLCD_DRW_CIRCLE_SOLID_x+0, 0 
 	MOVWF       FARG_GLCD_POINT_CLR_x+0 
@@ -1952,28 +1980,28 @@ L_GLCD_DRW_CIRCLE_SOLID105:
 	MOVF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 0 
 	ADDWF       FARG_GLCD_POINT_CLR_y+0, 1 
 	CALL        _GLCD_POINT_CLR+0, 0
-;glcd_jo.h,656 :: 		}
+;glcd_pic.h,542 :: 		}
+L_GLCD_DRW_CIRCLE_SOLID108:
+;glcd_pic.h,543 :: 		}
 L_GLCD_DRW_CIRCLE_SOLID106:
-;glcd_jo.h,657 :: 		}
-L_GLCD_DRW_CIRCLE_SOLID104:
-;glcd_jo.h,639 :: 		for(j=0;j<=r;j++)
+;glcd_pic.h,525 :: 		for(j=0;j<=r;j++)
 	INCF        GLCD_DRW_CIRCLE_SOLID_j_L0+0, 1 
-;glcd_jo.h,658 :: 		}
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID101
-L_GLCD_DRW_CIRCLE_SOLID102:
-;glcd_jo.h,636 :: 		for(i=0;i<=r;i++)
+;glcd_pic.h,544 :: 		}
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID103
+L_GLCD_DRW_CIRCLE_SOLID104:
+;glcd_pic.h,522 :: 		for(i=0;i<=r;i++)
 	INCF        GLCD_DRW_CIRCLE_SOLID_i_L0+0, 1 
-;glcd_jo.h,659 :: 		}
-	GOTO        L_GLCD_DRW_CIRCLE_SOLID98
-L_GLCD_DRW_CIRCLE_SOLID99:
-;glcd_jo.h,660 :: 		}
+;glcd_pic.h,545 :: 		}
+	GOTO        L_GLCD_DRW_CIRCLE_SOLID100
+L_GLCD_DRW_CIRCLE_SOLID101:
+;glcd_pic.h,546 :: 		}
 	RETURN      0
 ; end of _GLCD_DRW_CIRCLE_SOLID
 
 _GLCD_CHAR_SET:
 
-;glcd_jo.h,671 :: 		unsigned int GLCD_CHAR_SET(unsigned char glcd_x, unsigned char glcd_y, const char * glcd_font, unsigned char num)
-;glcd_jo.h,677 :: 		add = (glcd_y / 8)*128 + glcd_x;
+;glcd_pic.h,552 :: 		unsigned int GLCD_CHAR_SET(unsigned char glcd_x, unsigned char glcd_y, const char * glcd_font, unsigned char num)
+;glcd_pic.h,558 :: 		add = (glcd_y / 8)*128 + glcd_x;
 	MOVLW       3
 	MOVWF       R0 
 	MOVF        FARG_GLCD_CHAR_SET_glcd_y+0, 0 
@@ -1981,44 +2009,44 @@ _GLCD_CHAR_SET:
 	MOVLW       0
 	MOVWF       GLCD_CHAR_SET_add_L0+1 
 	MOVF        R0, 0 
-L__GLCD_CHAR_SET175:
-	BZ          L__GLCD_CHAR_SET176
+L__GLCD_CHAR_SET177:
+	BZ          L__GLCD_CHAR_SET178
 	RRCF        GLCD_CHAR_SET_add_L0+0, 1 
 	BCF         GLCD_CHAR_SET_add_L0+0, 7 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_SET175
-L__GLCD_CHAR_SET176:
+	GOTO        L__GLCD_CHAR_SET177
+L__GLCD_CHAR_SET178:
 	MOVLW       7
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       GLCD_CHAR_SET_add_L0+1 
 	MOVF        R0, 0 
-L__GLCD_CHAR_SET177:
-	BZ          L__GLCD_CHAR_SET178
+L__GLCD_CHAR_SET179:
+	BZ          L__GLCD_CHAR_SET180
 	RLCF        GLCD_CHAR_SET_add_L0+0, 1 
 	BCF         GLCD_CHAR_SET_add_L0+0, 0 
 	RLCF        GLCD_CHAR_SET_add_L0+1, 1 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_SET177
-L__GLCD_CHAR_SET178:
+	GOTO        L__GLCD_CHAR_SET179
+L__GLCD_CHAR_SET180:
 	MOVF        FARG_GLCD_CHAR_SET_glcd_x+0, 0 
 	ADDWF       GLCD_CHAR_SET_add_L0+0, 1 
 	MOVLW       0
 	ADDWFC      GLCD_CHAR_SET_add_L0+1, 1 
-;glcd_jo.h,678 :: 		glcd_y = glcd_y % 8;
+;glcd_pic.h,559 :: 		glcd_y = glcd_y % 8;
 	MOVLW       7
 	ANDWF       FARG_GLCD_CHAR_SET_glcd_y+0, 1 
-;glcd_jo.h,680 :: 		if((num >= 32)&&(num <= 126))
+;glcd_pic.h,561 :: 		if((num >= 32)&&(num <= 126))
 	MOVLW       32
 	SUBWF       FARG_GLCD_CHAR_SET_num+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_CHAR_SET109
+	GOTO        L_GLCD_CHAR_SET111
 	MOVF        FARG_GLCD_CHAR_SET_num+0, 0 
 	SUBLW       126
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_CHAR_SET109
-L__GLCD_CHAR_SET153:
-;glcd_jo.h,682 :: 		glcd_font = glcd_font + (num-32)*5;
+	GOTO        L_GLCD_CHAR_SET111
+L__GLCD_CHAR_SET156:
+;glcd_pic.h,563 :: 		glcd_font = glcd_font + (num-32)*5;
 	MOVLW       32
 	SUBWF       FARG_GLCD_CHAR_SET_num+0, 0 
 	MOVWF       R0 
@@ -2038,14 +2066,14 @@ L__GLCD_CHAR_SET153:
 	BTFSC       R1, 7 
 	MOVLW       255
 	ADDWFC      FARG_GLCD_CHAR_SET_glcd_font+2, 1 
-;glcd_jo.h,684 :: 		for(i=0;i<5;i++)
+;glcd_pic.h,565 :: 		for(i=0;i<5;i++)
 	CLRF        GLCD_CHAR_SET_i_L0+0 
-L_GLCD_CHAR_SET110:
+L_GLCD_CHAR_SET112:
 	MOVLW       5
 	SUBWF       GLCD_CHAR_SET_i_L0+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_CHAR_SET111
-;glcd_jo.h,686 :: 		c = *glcd_font;
+	GOTO        L_GLCD_CHAR_SET113
+;glcd_pic.h,567 :: 		c = *(glcd_font);
 	MOVF        FARG_GLCD_CHAR_SET_glcd_font+0, 0 
 	MOVWF       TBLPTRL 
 	MOVF        FARG_GLCD_CHAR_SET_glcd_font+1, 0 
@@ -2056,7 +2084,7 @@ L_GLCD_CHAR_SET110:
 	MOVFF       TABLAT+0, R4
 	MOVF        R4, 0 
 	MOVWF       GLCD_CHAR_SET_c_L0+0 
-;glcd_jo.h,687 :: 		glcd_buff[add] |= (c << glcd_y);
+;glcd_pic.h,568 :: 		glcd_buff[add] |= (c << glcd_y);
 	MOVLW       _glcd_buff+0
 	ADDWF       GLCD_CHAR_SET_add_L0+0, 0 
 	MOVWF       R2 
@@ -2068,13 +2096,13 @@ L_GLCD_CHAR_SET110:
 	MOVF        R4, 0 
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__GLCD_CHAR_SET179:
-	BZ          L__GLCD_CHAR_SET180
+L__GLCD_CHAR_SET181:
+	BZ          L__GLCD_CHAR_SET182
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_SET179
-L__GLCD_CHAR_SET180:
+	GOTO        L__GLCD_CHAR_SET181
+L__GLCD_CHAR_SET182:
 	MOVFF       R2, FSR0L
 	MOVFF       R3, FSR0H
 	MOVF        POSTINC0+0, 0 
@@ -2083,7 +2111,7 @@ L__GLCD_CHAR_SET180:
 	MOVFF       R3, FSR1H
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,688 :: 		glcd_buff[add + 128] |= (c >> (8 - glcd_y));
+;glcd_pic.h,569 :: 		glcd_buff[add + 128] |= (c >> (8 - glcd_y));
 	MOVLW       128
 	ADDWF       GLCD_CHAR_SET_add_L0+0, 0 
 	MOVWF       R0 
@@ -2107,13 +2135,13 @@ L__GLCD_CHAR_SET180:
 	MOVF        GLCD_CHAR_SET_c_L0+0, 0 
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__GLCD_CHAR_SET181:
-	BZ          L__GLCD_CHAR_SET182
+L__GLCD_CHAR_SET183:
+	BZ          L__GLCD_CHAR_SET184
 	RRCF        R0, 1 
 	BCF         R0, 7 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_SET181
-L__GLCD_CHAR_SET182:
+	GOTO        L__GLCD_CHAR_SET183
+L__GLCD_CHAR_SET184:
 	MOVFF       R2, FSR0L
 	MOVFF       R3, FSR0H
 	MOVF        POSTINC0+0, 0 
@@ -2122,37 +2150,37 @@ L__GLCD_CHAR_SET182:
 	MOVFF       R3, FSR1H
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,689 :: 		add++;
+;glcd_pic.h,570 :: 		add++;
 	INFSNZ      GLCD_CHAR_SET_add_L0+0, 1 
 	INCF        GLCD_CHAR_SET_add_L0+1, 1 
-;glcd_jo.h,690 :: 		glcd_font++;
+;glcd_pic.h,571 :: 		glcd_font++;
 	MOVLW       1
 	ADDWF       FARG_GLCD_CHAR_SET_glcd_font+0, 1 
 	MOVLW       0
 	ADDWFC      FARG_GLCD_CHAR_SET_glcd_font+1, 1 
 	ADDWFC      FARG_GLCD_CHAR_SET_glcd_font+2, 1 
-;glcd_jo.h,684 :: 		for(i=0;i<5;i++)
+;glcd_pic.h,565 :: 		for(i=0;i<5;i++)
 	INCF        GLCD_CHAR_SET_i_L0+0, 1 
-;glcd_jo.h,691 :: 		}
-	GOTO        L_GLCD_CHAR_SET110
+;glcd_pic.h,572 :: 		}
+	GOTO        L_GLCD_CHAR_SET112
+L_GLCD_CHAR_SET113:
+;glcd_pic.h,573 :: 		}
 L_GLCD_CHAR_SET111:
-;glcd_jo.h,692 :: 		}
-L_GLCD_CHAR_SET109:
-;glcd_jo.h,693 :: 		return (glcd_x + 6);
+;glcd_pic.h,574 :: 		return (glcd_x + 6);
 	MOVLW       6
 	ADDWF       FARG_GLCD_CHAR_SET_glcd_x+0, 0 
 	MOVWF       R0 
 	CLRF        R1 
 	MOVLW       0
 	ADDWFC      R1, 1 
-;glcd_jo.h,694 :: 		}
+;glcd_pic.h,575 :: 		}
 	RETURN      0
 ; end of _GLCD_CHAR_SET
 
 _GLCD_CHAR_CLR:
 
-;glcd_jo.h,705 :: 		unsigned int GLCD_CHAR_CLR(unsigned char glcd_x, unsigned char glcd_y, const char * glcd_font, unsigned char num)
-;glcd_jo.h,711 :: 		add = (glcd_y / 8)*128 + glcd_x;
+;glcd_pic.h,577 :: 		unsigned int GLCD_CHAR_CLR(unsigned char glcd_x, unsigned char glcd_y, const char * glcd_font, unsigned char num)
+;glcd_pic.h,583 :: 		add = (glcd_y / 8)*128 + glcd_x;
 	MOVLW       3
 	MOVWF       R0 
 	MOVF        FARG_GLCD_CHAR_CLR_glcd_y+0, 0 
@@ -2160,44 +2188,44 @@ _GLCD_CHAR_CLR:
 	MOVLW       0
 	MOVWF       GLCD_CHAR_CLR_add_L0+1 
 	MOVF        R0, 0 
-L__GLCD_CHAR_CLR183:
-	BZ          L__GLCD_CHAR_CLR184
+L__GLCD_CHAR_CLR185:
+	BZ          L__GLCD_CHAR_CLR186
 	RRCF        GLCD_CHAR_CLR_add_L0+0, 1 
 	BCF         GLCD_CHAR_CLR_add_L0+0, 7 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_CLR183
-L__GLCD_CHAR_CLR184:
+	GOTO        L__GLCD_CHAR_CLR185
+L__GLCD_CHAR_CLR186:
 	MOVLW       7
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       GLCD_CHAR_CLR_add_L0+1 
 	MOVF        R0, 0 
-L__GLCD_CHAR_CLR185:
-	BZ          L__GLCD_CHAR_CLR186
+L__GLCD_CHAR_CLR187:
+	BZ          L__GLCD_CHAR_CLR188
 	RLCF        GLCD_CHAR_CLR_add_L0+0, 1 
 	BCF         GLCD_CHAR_CLR_add_L0+0, 0 
 	RLCF        GLCD_CHAR_CLR_add_L0+1, 1 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_CLR185
-L__GLCD_CHAR_CLR186:
+	GOTO        L__GLCD_CHAR_CLR187
+L__GLCD_CHAR_CLR188:
 	MOVF        FARG_GLCD_CHAR_CLR_glcd_x+0, 0 
 	ADDWF       GLCD_CHAR_CLR_add_L0+0, 1 
 	MOVLW       0
 	ADDWFC      GLCD_CHAR_CLR_add_L0+1, 1 
-;glcd_jo.h,712 :: 		glcd_y = glcd_y % 8;
+;glcd_pic.h,584 :: 		glcd_y = glcd_y % 8;
 	MOVLW       7
 	ANDWF       FARG_GLCD_CHAR_CLR_glcd_y+0, 1 
-;glcd_jo.h,714 :: 		if((num >= 32)&&(num <= 126))
+;glcd_pic.h,586 :: 		if((num >= 32)&&(num <= 126))
 	MOVLW       32
 	SUBWF       FARG_GLCD_CHAR_CLR_num+0, 0 
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_CHAR_CLR115
+	GOTO        L_GLCD_CHAR_CLR117
 	MOVF        FARG_GLCD_CHAR_CLR_num+0, 0 
 	SUBLW       126
 	BTFSS       STATUS+0, 0 
-	GOTO        L_GLCD_CHAR_CLR115
-L__GLCD_CHAR_CLR154:
-;glcd_jo.h,716 :: 		glcd_font = glcd_font + (num-32)*5;
+	GOTO        L_GLCD_CHAR_CLR117
+L__GLCD_CHAR_CLR157:
+;glcd_pic.h,588 :: 		glcd_font = glcd_font + (num-32)*5;
 	MOVLW       32
 	SUBWF       FARG_GLCD_CHAR_CLR_num+0, 0 
 	MOVWF       R0 
@@ -2217,25 +2245,17 @@ L__GLCD_CHAR_CLR154:
 	BTFSC       R1, 7 
 	MOVLW       255
 	ADDWFC      FARG_GLCD_CHAR_CLR_glcd_font+2, 1 
-;glcd_jo.h,718 :: 		for(i=0;i<5;i++)
+;glcd_pic.h,590 :: 		for(i=0;i<5;i++)
 	CLRF        GLCD_CHAR_CLR_i_L0+0 
-L_GLCD_CHAR_CLR116:
+L_GLCD_CHAR_CLR118:
 	MOVLW       5
 	SUBWF       GLCD_CHAR_CLR_i_L0+0, 0 
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_CHAR_CLR117
-;glcd_jo.h,720 :: 		c = *glcd_font;
+	GOTO        L_GLCD_CHAR_CLR119
+;glcd_pic.h,593 :: 		c = (unsigned short int)glcd_font;
 	MOVF        FARG_GLCD_CHAR_CLR_glcd_font+0, 0 
-	MOVWF       TBLPTRL 
-	MOVF        FARG_GLCD_CHAR_CLR_glcd_font+1, 0 
-	MOVWF       TBLPTRH 
-	MOVF        FARG_GLCD_CHAR_CLR_glcd_font+2, 0 
-	MOVWF       TBLPTRU 
-	TBLRD*+
-	MOVFF       TABLAT+0, R4
-	MOVF        R4, 0 
 	MOVWF       GLCD_CHAR_CLR_c_L0+0 
-;glcd_jo.h,721 :: 		glcd_buff[add] &= ((c << glcd_y) ^ 0xFF);
+;glcd_pic.h,594 :: 		glcd_buff[add] &= ((c << glcd_y) ^ 0xFF);
 	MOVLW       _glcd_buff+0
 	ADDWF       GLCD_CHAR_CLR_add_L0+0, 0 
 	MOVWF       R2 
@@ -2244,16 +2264,16 @@ L_GLCD_CHAR_CLR116:
 	MOVWF       R3 
 	MOVF        FARG_GLCD_CHAR_CLR_glcd_y+0, 0 
 	MOVWF       R1 
-	MOVF        R4, 0 
+	MOVF        FARG_GLCD_CHAR_CLR_glcd_font+0, 0 
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__GLCD_CHAR_CLR187:
-	BZ          L__GLCD_CHAR_CLR188
+L__GLCD_CHAR_CLR189:
+	BZ          L__GLCD_CHAR_CLR190
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_CLR187
-L__GLCD_CHAR_CLR188:
+	GOTO        L__GLCD_CHAR_CLR189
+L__GLCD_CHAR_CLR190:
 	MOVLW       255
 	XORWF       R0, 1 
 	MOVFF       R2, FSR0L
@@ -2264,7 +2284,7 @@ L__GLCD_CHAR_CLR188:
 	MOVFF       R3, FSR1H
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,722 :: 		glcd_buff[add + 128] &= ((c >> (8 - glcd_y)) ^ 0xFF);
+;glcd_pic.h,595 :: 		glcd_buff[add + 128] &= ((c >> (8 - glcd_y)) ^ 0xFF);
 	MOVLW       128
 	ADDWF       GLCD_CHAR_CLR_add_L0+0, 0 
 	MOVWF       R0 
@@ -2288,13 +2308,13 @@ L__GLCD_CHAR_CLR188:
 	MOVF        GLCD_CHAR_CLR_c_L0+0, 0 
 	MOVWF       R0 
 	MOVF        R1, 0 
-L__GLCD_CHAR_CLR189:
-	BZ          L__GLCD_CHAR_CLR190
+L__GLCD_CHAR_CLR191:
+	BZ          L__GLCD_CHAR_CLR192
 	RRCF        R0, 1 
 	BCF         R0, 7 
 	ADDLW       255
-	GOTO        L__GLCD_CHAR_CLR189
-L__GLCD_CHAR_CLR190:
+	GOTO        L__GLCD_CHAR_CLR191
+L__GLCD_CHAR_CLR192:
 	MOVLW       255
 	XORWF       R0, 1 
 	MOVFF       R2, FSR0L
@@ -2305,48 +2325,48 @@ L__GLCD_CHAR_CLR190:
 	MOVFF       R3, FSR1H
 	MOVF        R0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,723 :: 		add++;
+;glcd_pic.h,596 :: 		add++;
 	INFSNZ      GLCD_CHAR_CLR_add_L0+0, 1 
 	INCF        GLCD_CHAR_CLR_add_L0+1, 1 
-;glcd_jo.h,724 :: 		glcd_font++;
+;glcd_pic.h,597 :: 		glcd_font++;
 	MOVLW       1
 	ADDWF       FARG_GLCD_CHAR_CLR_glcd_font+0, 1 
 	MOVLW       0
 	ADDWFC      FARG_GLCD_CHAR_CLR_glcd_font+1, 1 
 	ADDWFC      FARG_GLCD_CHAR_CLR_glcd_font+2, 1 
-;glcd_jo.h,718 :: 		for(i=0;i<5;i++)
+;glcd_pic.h,590 :: 		for(i=0;i<5;i++)
 	INCF        GLCD_CHAR_CLR_i_L0+0, 1 
-;glcd_jo.h,725 :: 		}
-	GOTO        L_GLCD_CHAR_CLR116
+;glcd_pic.h,598 :: 		}
+	GOTO        L_GLCD_CHAR_CLR118
+L_GLCD_CHAR_CLR119:
+;glcd_pic.h,599 :: 		}
 L_GLCD_CHAR_CLR117:
-;glcd_jo.h,726 :: 		}
-L_GLCD_CHAR_CLR115:
-;glcd_jo.h,727 :: 		return (glcd_x + 6);
+;glcd_pic.h,600 :: 		return (glcd_x + 6);
 	MOVLW       6
 	ADDWF       FARG_GLCD_CHAR_CLR_glcd_x+0, 0 
 	MOVWF       R0 
 	CLRF        R1 
 	MOVLW       0
 	ADDWFC      R1, 1 
-;glcd_jo.h,728 :: 		}
+;glcd_pic.h,601 :: 		}
 	RETURN      0
 ; end of _GLCD_CHAR_CLR
 
 _GLCD_OUT_STR:
 
-;glcd_jo.h,739 :: 		unsigned int GLCD_OUT_STR(unsigned char glcd_x, unsigned char glcd_y, char *glcd_str, unsigned char black_white)
-;glcd_jo.h,741 :: 		while(*glcd_str)
-L_GLCD_OUT_STR119:
+;glcd_pic.h,603 :: 		unsigned int GLCD_OUT_STR(unsigned char glcd_x, unsigned char glcd_y, char *glcd_str, unsigned char black_white)
+;glcd_pic.h,605 :: 		while(*glcd_str)
+L_GLCD_OUT_STR121:
 	MOVFF       FARG_GLCD_OUT_STR_glcd_str+0, FSR0L
 	MOVFF       FARG_GLCD_OUT_STR_glcd_str+1, FSR0H
 	MOVF        POSTINC0+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_OUT_STR120
-;glcd_jo.h,743 :: 		if(black_white)
+	GOTO        L_GLCD_OUT_STR122
+;glcd_pic.h,607 :: 		if(black_white)
 	MOVF        FARG_GLCD_OUT_STR_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_OUT_STR121
-;glcd_jo.h,744 :: 		GLCD_CHAR_SET(glcd_x, glcd_y, basic_font, *glcd_str);
+	GOTO        L_GLCD_OUT_STR123
+;glcd_pic.h,608 :: 		GLCD_CHAR_SET(glcd_x, glcd_y, basic_font, *glcd_str);
 	MOVF        FARG_GLCD_OUT_STR_glcd_x+0, 0 
 	MOVWF       FARG_GLCD_CHAR_SET_glcd_x+0 
 	MOVF        FARG_GLCD_OUT_STR_glcd_y+0, 0 
@@ -2362,9 +2382,9 @@ L_GLCD_OUT_STR119:
 	MOVF        POSTINC0+0, 0 
 	MOVWF       FARG_GLCD_CHAR_SET_num+0 
 	CALL        _GLCD_CHAR_SET+0, 0
-	GOTO        L_GLCD_OUT_STR122
-L_GLCD_OUT_STR121:
-;glcd_jo.h,746 :: 		GLCD_CHAR_CLR(glcd_x, glcd_y, basic_font, *glcd_str);
+	GOTO        L_GLCD_OUT_STR124
+L_GLCD_OUT_STR123:
+;glcd_pic.h,610 :: 		GLCD_CHAR_CLR(glcd_x, glcd_y, basic_font, *glcd_str);
 	MOVF        FARG_GLCD_OUT_STR_glcd_x+0, 0 
 	MOVWF       FARG_GLCD_CHAR_CLR_glcd_x+0 
 	MOVF        FARG_GLCD_OUT_STR_glcd_y+0, 0 
@@ -2380,111 +2400,41 @@ L_GLCD_OUT_STR121:
 	MOVF        POSTINC0+0, 0 
 	MOVWF       FARG_GLCD_CHAR_CLR_num+0 
 	CALL        _GLCD_CHAR_CLR+0, 0
-L_GLCD_OUT_STR122:
-;glcd_jo.h,747 :: 		glcd_x = glcd_x + 6;
+L_GLCD_OUT_STR124:
+;glcd_pic.h,611 :: 		glcd_x = glcd_x + 6;
 	MOVLW       6
 	ADDWF       FARG_GLCD_OUT_STR_glcd_x+0, 1 
-;glcd_jo.h,748 :: 		glcd_str++;
+;glcd_pic.h,612 :: 		glcd_str++;
 	INFSNZ      FARG_GLCD_OUT_STR_glcd_str+0, 1 
 	INCF        FARG_GLCD_OUT_STR_glcd_str+1, 1 
-;glcd_jo.h,749 :: 		}
-	GOTO        L_GLCD_OUT_STR119
-L_GLCD_OUT_STR120:
-;glcd_jo.h,750 :: 		return (glcd_x);
+;glcd_pic.h,613 :: 		}
+	GOTO        L_GLCD_OUT_STR121
+L_GLCD_OUT_STR122:
+;glcd_pic.h,614 :: 		return (glcd_x);
 	MOVF        FARG_GLCD_OUT_STR_glcd_x+0, 0 
 	MOVWF       R0 
 	MOVLW       0
 	MOVWF       R1 
-;glcd_jo.h,751 :: 		}
+;glcd_pic.h,615 :: 		}
 	RETURN      0
 ; end of _GLCD_OUT_STR
 
-_GLCD_OUT_STR_LEN:
-
-;glcd_jo.h,752 :: 		unsigned int GLCD_OUT_STR_LEN(unsigned char glcd_x, unsigned char glcd_y, char *glcd_str, unsigned char glcd_length, unsigned char black_white)
-;glcd_jo.h,755 :: 		for(i=glcd_length;i>0;i--)
-	MOVF        FARG_GLCD_OUT_STR_LEN_glcd_length+0, 0 
-	MOVWF       GLCD_OUT_STR_LEN_i_L0+0 
-L_GLCD_OUT_STR_LEN123:
-	MOVF        GLCD_OUT_STR_LEN_i_L0+0, 0 
-	SUBLW       0
-	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_OUT_STR_LEN124
-;glcd_jo.h,757 :: 		if(black_white)
-	MOVF        FARG_GLCD_OUT_STR_LEN_black_white+0, 1 
-	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_OUT_STR_LEN126
-;glcd_jo.h,758 :: 		GLCD_CHAR_SET(glcd_x, glcd_y, basic_font, *glcd_str);
-	MOVF        FARG_GLCD_OUT_STR_LEN_glcd_x+0, 0 
-	MOVWF       FARG_GLCD_CHAR_SET_glcd_x+0 
-	MOVF        FARG_GLCD_OUT_STR_LEN_glcd_y+0, 0 
-	MOVWF       FARG_GLCD_CHAR_SET_glcd_y+0 
-	MOVLW       _basic_font+0
-	MOVWF       FARG_GLCD_CHAR_SET_glcd_font+0 
-	MOVLW       hi_addr(_basic_font+0)
-	MOVWF       FARG_GLCD_CHAR_SET_glcd_font+1 
-	MOVLW       higher_addr(_basic_font+0)
-	MOVWF       FARG_GLCD_CHAR_SET_glcd_font+2 
-	MOVFF       FARG_GLCD_OUT_STR_LEN_glcd_str+0, FSR0L
-	MOVFF       FARG_GLCD_OUT_STR_LEN_glcd_str+1, FSR0H
-	MOVF        POSTINC0+0, 0 
-	MOVWF       FARG_GLCD_CHAR_SET_num+0 
-	CALL        _GLCD_CHAR_SET+0, 0
-	GOTO        L_GLCD_OUT_STR_LEN127
-L_GLCD_OUT_STR_LEN126:
-;glcd_jo.h,760 :: 		GLCD_CHAR_CLR(glcd_x, glcd_y, basic_font, *glcd_str);
-	MOVF        FARG_GLCD_OUT_STR_LEN_glcd_x+0, 0 
-	MOVWF       FARG_GLCD_CHAR_CLR_glcd_x+0 
-	MOVF        FARG_GLCD_OUT_STR_LEN_glcd_y+0, 0 
-	MOVWF       FARG_GLCD_CHAR_CLR_glcd_y+0 
-	MOVLW       _basic_font+0
-	MOVWF       FARG_GLCD_CHAR_CLR_glcd_font+0 
-	MOVLW       hi_addr(_basic_font+0)
-	MOVWF       FARG_GLCD_CHAR_CLR_glcd_font+1 
-	MOVLW       higher_addr(_basic_font+0)
-	MOVWF       FARG_GLCD_CHAR_CLR_glcd_font+2 
-	MOVFF       FARG_GLCD_OUT_STR_LEN_glcd_str+0, FSR0L
-	MOVFF       FARG_GLCD_OUT_STR_LEN_glcd_str+1, FSR0H
-	MOVF        POSTINC0+0, 0 
-	MOVWF       FARG_GLCD_CHAR_CLR_num+0 
-	CALL        _GLCD_CHAR_CLR+0, 0
-L_GLCD_OUT_STR_LEN127:
-;glcd_jo.h,761 :: 		glcd_x = glcd_x + 6;
-	MOVLW       6
-	ADDWF       FARG_GLCD_OUT_STR_LEN_glcd_x+0, 1 
-;glcd_jo.h,762 :: 		glcd_str++;
-	INFSNZ      FARG_GLCD_OUT_STR_LEN_glcd_str+0, 1 
-	INCF        FARG_GLCD_OUT_STR_LEN_glcd_str+1, 1 
-;glcd_jo.h,755 :: 		for(i=glcd_length;i>0;i--)
-	DECF        GLCD_OUT_STR_LEN_i_L0+0, 1 
-;glcd_jo.h,763 :: 		}
-	GOTO        L_GLCD_OUT_STR_LEN123
-L_GLCD_OUT_STR_LEN124:
-;glcd_jo.h,764 :: 		return (glcd_x);
-	MOVF        FARG_GLCD_OUT_STR_LEN_glcd_x+0, 0 
-	MOVWF       R0 
-	MOVLW       0
-	MOVWF       R1 
-;glcd_jo.h,765 :: 		}
-	RETURN      0
-; end of _GLCD_OUT_STR_LEN
-
 _GLCD_OUT_DEC:
 
-;glcd_jo.h,777 :: 		unsigned int GLCD_OUT_DEC(unsigned char glcd_x, unsigned char glcd_y, unsigned long int glcd_n, unsigned char glcd_length, unsigned char black_white)
-;glcd_jo.h,782 :: 		if(black_white)
+;glcd_pic.h,638 :: 		unsigned int GLCD_OUT_DEC(unsigned char glcd_x, unsigned char glcd_y, unsigned long int glcd_n, unsigned char glcd_length, unsigned char black_white)
+;glcd_pic.h,643 :: 		if(black_white)
 	MOVF        FARG_GLCD_OUT_DEC_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_GLCD_OUT_DEC128
-;glcd_jo.h,783 :: 		for(i=glcd_length;i>0;i--)
+	GOTO        L_GLCD_OUT_DEC125
+;glcd_pic.h,644 :: 		for(i=glcd_length;i>0;i--)
 	MOVF        FARG_GLCD_OUT_DEC_glcd_length+0, 0 
 	MOVWF       GLCD_OUT_DEC_i_L0+0 
-L_GLCD_OUT_DEC129:
+L_GLCD_OUT_DEC126:
 	MOVF        GLCD_OUT_DEC_i_L0+0, 0 
 	SUBLW       0
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_OUT_DEC130
-;glcd_jo.h,785 :: 		glcd_temp = (glcd_n % 10) + 0x30;
+	GOTO        L_GLCD_OUT_DEC127
+;glcd_pic.h,646 :: 		glcd_temp = (glcd_n % 10) + 0x30;
 	MOVLW       10
 	MOVWF       R4 
 	MOVLW       0
@@ -2511,7 +2461,7 @@ L_GLCD_OUT_DEC129:
 	MOVLW       48
 	ADDWF       R0, 0 
 	MOVWF       GLCD_OUT_DEC_glcd_temp_L0+0 
-;glcd_jo.h,786 :: 		glcd_n = glcd_n / 10;
+;glcd_pic.h,647 :: 		glcd_n = glcd_n / 10;
 	MOVLW       10
 	MOVWF       R4 
 	MOVLW       0
@@ -2535,7 +2485,7 @@ L_GLCD_OUT_DEC129:
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_n+2 
 	MOVF        R3, 0 
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_n+3 
-;glcd_jo.h,787 :: 		GLCD_CHAR_SET((glcd_x + (i-1)*6), glcd_y, basic_font, glcd_temp);
+;glcd_pic.h,648 :: 		GLCD_CHAR_SET((glcd_x + (i-1)*6), glcd_y, basic_font, glcd_temp);
 	DECF        GLCD_OUT_DEC_i_L0+0, 0 
 	MOVWF       R0 
 	MOVLW       6
@@ -2556,22 +2506,22 @@ L_GLCD_OUT_DEC129:
 	MOVF        GLCD_OUT_DEC_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_CHAR_SET_num+0 
 	CALL        _GLCD_CHAR_SET+0, 0
-;glcd_jo.h,783 :: 		for(i=glcd_length;i>0;i--)
+;glcd_pic.h,644 :: 		for(i=glcd_length;i>0;i--)
 	DECF        GLCD_OUT_DEC_i_L0+0, 1 
-;glcd_jo.h,788 :: 		}
+;glcd_pic.h,649 :: 		}
+	GOTO        L_GLCD_OUT_DEC126
+L_GLCD_OUT_DEC127:
 	GOTO        L_GLCD_OUT_DEC129
-L_GLCD_OUT_DEC130:
-	GOTO        L_GLCD_OUT_DEC132
-L_GLCD_OUT_DEC128:
-;glcd_jo.h,790 :: 		for(i=glcd_length;i>0;i--)
+L_GLCD_OUT_DEC125:
+;glcd_pic.h,651 :: 		for(i=glcd_length;i>0;i--)
 	MOVF        FARG_GLCD_OUT_DEC_glcd_length+0, 0 
 	MOVWF       GLCD_OUT_DEC_i_L0+0 
-L_GLCD_OUT_DEC133:
+L_GLCD_OUT_DEC130:
 	MOVF        GLCD_OUT_DEC_i_L0+0, 0 
 	SUBLW       0
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_OUT_DEC134
-;glcd_jo.h,792 :: 		glcd_temp = (glcd_n % 10) + 0x30;
+	GOTO        L_GLCD_OUT_DEC131
+;glcd_pic.h,653 :: 		glcd_temp = (glcd_n % 10) + 0x30;
 	MOVLW       10
 	MOVWF       R4 
 	MOVLW       0
@@ -2598,7 +2548,7 @@ L_GLCD_OUT_DEC133:
 	MOVLW       48
 	ADDWF       R0, 0 
 	MOVWF       GLCD_OUT_DEC_glcd_temp_L0+0 
-;glcd_jo.h,793 :: 		glcd_n = glcd_n / 10;
+;glcd_pic.h,654 :: 		glcd_n = glcd_n / 10;
 	MOVLW       10
 	MOVWF       R4 
 	MOVLW       0
@@ -2622,7 +2572,7 @@ L_GLCD_OUT_DEC133:
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_n+2 
 	MOVF        R3, 0 
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_n+3 
-;glcd_jo.h,794 :: 		GLCD_CHAR_CLR((glcd_x + (i-1)*6), glcd_y, basic_font, glcd_temp);
+;glcd_pic.h,655 :: 		GLCD_CHAR_CLR((glcd_x + (i-1)*6), glcd_y, basic_font, glcd_temp);
 	DECF        GLCD_OUT_DEC_i_L0+0, 0 
 	MOVWF       R0 
 	MOVLW       6
@@ -2643,13 +2593,13 @@ L_GLCD_OUT_DEC133:
 	MOVF        GLCD_OUT_DEC_glcd_temp_L0+0, 0 
 	MOVWF       FARG_GLCD_CHAR_CLR_num+0 
 	CALL        _GLCD_CHAR_CLR+0, 0
-;glcd_jo.h,790 :: 		for(i=glcd_length;i>0;i--)
+;glcd_pic.h,651 :: 		for(i=glcd_length;i>0;i--)
 	DECF        GLCD_OUT_DEC_i_L0+0, 1 
-;glcd_jo.h,795 :: 		}
-	GOTO        L_GLCD_OUT_DEC133
-L_GLCD_OUT_DEC134:
-L_GLCD_OUT_DEC132:
-;glcd_jo.h,796 :: 		return (glcd_x + glcd_length*6);
+;glcd_pic.h,656 :: 		}
+	GOTO        L_GLCD_OUT_DEC130
+L_GLCD_OUT_DEC131:
+L_GLCD_OUT_DEC129:
+;glcd_pic.h,657 :: 		return (glcd_x + glcd_length*6);
 	MOVLW       6
 	MULWF       FARG_GLCD_OUT_DEC_glcd_length+0 
 	MOVF        PRODL+0, 0 
@@ -2660,95 +2610,104 @@ L_GLCD_OUT_DEC132:
 	ADDWF       R0, 1 
 	MOVLW       0
 	ADDWFC      R1, 1 
-;glcd_jo.h,797 :: 		}
+;glcd_pic.h,658 :: 		}
 	RETURN      0
 ; end of _GLCD_OUT_DEC
 
 _GLCD_IMAGE:
 
-;glcd_jo.h,807 :: 		void GLCD_IMAGE(const char *image)
-;glcd_jo.h,810 :: 		for(index=0; index<1024; index++)
-	CLRF        R3 
-	CLRF        R4 
-L_GLCD_IMAGE136:
+;glcd_pic.h,660 :: 		void GLCD_IMAGE(unsigned char * image)
+;glcd_pic.h,663 :: 		for(i=0;i<1024;i++)
+	CLRF        R1 
+	CLRF        R2 
+L_GLCD_IMAGE133:
 	MOVLW       128
-	XORWF       R4, 0 
+	XORWF       R2, 0 
 	MOVWF       R0 
 	MOVLW       128
 	XORLW       4
 	SUBWF       R0, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__GLCD_IMAGE191
+	GOTO        L__GLCD_IMAGE193
 	MOVLW       0
-	SUBWF       R3, 0 
-L__GLCD_IMAGE191:
+	SUBWF       R1, 0 
+L__GLCD_IMAGE193:
 	BTFSC       STATUS+0, 0 
-	GOTO        L_GLCD_IMAGE137
-;glcd_jo.h,811 :: 		glcd_buff[index] = (const char *)image[index];
+	GOTO        L_GLCD_IMAGE134
+;glcd_pic.h,664 :: 		glcd_buff[i] = image[i];
 	MOVLW       _glcd_buff+0
-	ADDWF       R3, 0 
+	ADDWF       R1, 0 
 	MOVWF       FSR1L 
 	MOVLW       hi_addr(_glcd_buff+0)
-	ADDWFC      R4, 0 
+	ADDWFC      R2, 0 
 	MOVWF       FSR1H 
-	MOVF        R3, 0 
+	MOVF        R1, 0 
 	ADDWF       FARG_GLCD_IMAGE_image+0, 0 
-	MOVWF       TBLPTRL 
-	MOVF        R4, 0 
+	MOVWF       FSR0L 
+	MOVF        R2, 0 
 	ADDWFC      FARG_GLCD_IMAGE_image+1, 0 
-	MOVWF       TBLPTRH 
-	MOVLW       0
-	BTFSC       R4, 7 
-	MOVLW       255
-	ADDWFC      FARG_GLCD_IMAGE_image+2, 0 
-	MOVWF       TBLPTRU 
-	TBLRD*+
-	MOVFF       TABLAT+0, R0
-	MOVLW       0
-	MOVWF       R1 
-	MOVWF       R2 
-	MOVF        R0, 0 
+	MOVWF       FSR0H 
+	MOVF        POSTINC0+0, 0 
 	MOVWF       POSTINC1+0 
-;glcd_jo.h,810 :: 		for(index=0; index<1024; index++)
-	INFSNZ      R3, 1 
-	INCF        R4, 1 
-;glcd_jo.h,811 :: 		glcd_buff[index] = (const char *)image[index];
-	GOTO        L_GLCD_IMAGE136
-L_GLCD_IMAGE137:
-;glcd_jo.h,812 :: 		}
+;glcd_pic.h,663 :: 		for(i=0;i<1024;i++)
+	INFSNZ      R1, 1 
+	INCF        R2, 1 
+;glcd_pic.h,664 :: 		glcd_buff[i] = image[i];
+	GOTO        L_GLCD_IMAGE133
+L_GLCD_IMAGE134:
+;glcd_pic.h,666 :: 		}
 	RETURN      0
 ; end of _GLCD_IMAGE
 
-_delayTime:
+_GLCD_FILL:
 
-;glcd_jo.h,823 :: 		void delayTime (unsigned long counter)
-;glcd_jo.h,825 :: 		while (counter--);
-L_delayTime139:
-	MOVF        FARG_delayTime_counter+0, 0 
-	MOVWF       R0 
-	MOVF        FARG_delayTime_counter+1, 0 
-	MOVWF       R1 
-	MOVF        FARG_delayTime_counter+2, 0 
-	MOVWF       R2 
-	MOVF        FARG_delayTime_counter+3, 0 
-	MOVWF       R3 
-	MOVLW       1
-	SUBWF       FARG_delayTime_counter+0, 1 
-	MOVLW       0
-	SUBWFB      FARG_delayTime_counter+1, 1 
-	SUBWFB      FARG_delayTime_counter+2, 1 
-	SUBWFB      FARG_delayTime_counter+3, 1 
-	MOVF        R0, 0 
-	IORWF       R1, 0 
-	IORWF       R2, 0 
-	IORWF       R3, 0 
+;glcd_pic.h,668 :: 		void GLCD_FILL(unsigned char black_white)
+;glcd_pic.h,672 :: 		for(i=0;i<=127;i++)
+	CLRF        GLCD_FILL_i_L0+0 
+L_GLCD_FILL136:
+	MOVF        GLCD_FILL_i_L0+0, 0 
+	SUBLW       127
+	BTFSS       STATUS+0, 0 
+	GOTO        L_GLCD_FILL137
+;glcd_pic.h,673 :: 		for(j=0;j<=63;j++)
+	CLRF        GLCD_FILL_j_L0+0 
+L_GLCD_FILL139:
+	MOVF        GLCD_FILL_j_L0+0, 0 
+	SUBLW       63
+	BTFSS       STATUS+0, 0 
+	GOTO        L_GLCD_FILL140
+;glcd_pic.h,675 :: 		if(black_white)
+	MOVF        FARG_GLCD_FILL_black_white+0, 1 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_delayTime140
-	GOTO        L_delayTime139
-L_delayTime140:
-;glcd_jo.h,826 :: 		}
+	GOTO        L_GLCD_FILL142
+;glcd_pic.h,676 :: 		GLCD_POINT_DRW(i,j);
+	MOVF        GLCD_FILL_i_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_x+0 
+	MOVF        GLCD_FILL_j_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_DRW_y+0 
+	CALL        _GLCD_POINT_DRW+0, 0
+	GOTO        L_GLCD_FILL143
+L_GLCD_FILL142:
+;glcd_pic.h,678 :: 		GLCD_POINT_CLR(i,j);
+	MOVF        GLCD_FILL_i_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_CLR_x+0 
+	MOVF        GLCD_FILL_j_L0+0, 0 
+	MOVWF       FARG_GLCD_POINT_CLR_y+0 
+	CALL        _GLCD_POINT_CLR+0, 0
+L_GLCD_FILL143:
+;glcd_pic.h,673 :: 		for(j=0;j<=63;j++)
+	INCF        GLCD_FILL_j_L0+0, 1 
+;glcd_pic.h,679 :: 		}
+	GOTO        L_GLCD_FILL139
+L_GLCD_FILL140:
+;glcd_pic.h,672 :: 		for(i=0;i<=127;i++)
+	INCF        GLCD_FILL_i_L0+0, 1 
+;glcd_pic.h,679 :: 		}
+	GOTO        L_GLCD_FILL136
+L_GLCD_FILL137:
+;glcd_pic.h,680 :: 		}
 	RETURN      0
-; end of _delayTime
+; end of _GLCD_FILL
 
 _Shift_data:
 
@@ -2758,16 +2717,16 @@ _Shift_data:
 	MOVWF       R5 
 	MOVLW       0
 	MOVWF       R6 
-L_Shift_data141:
+L_Shift_data144:
 	MOVLW       0
 	SUBWF       R6, 0 
 	BTFSS       STATUS+0, 2 
-	GOTO        L__Shift_data192
+	GOTO        L__Shift_data194
 	MOVLW       1
 	SUBWF       R5, 0 
-L__Shift_data192:
+L__Shift_data194:
 	BTFSS       STATUS+0, 0 
-	GOTO        L_Shift_data142
+	GOTO        L_Shift_data145
 ;main.c,13 :: 		data_shift = mode[index];   //   (In & (1<<BitNo)) && 1
 	MOVF        FARG_Shift_data_index+0, 0 
 	MOVWF       R0 
@@ -2794,7 +2753,7 @@ L__Shift_data192:
 	MOVFF       TABLAT+0, R3
 	TBLRD*+
 	MOVFF       TABLAT+0, R4
-;main.c,14 :: 		DAT = (data_shift & (1 << (i-1))) && 1;	//check bit (i-1) of data_shift
+;main.c,14 :: 		DAT = (data_shift & (1 << (i-1))) && 1;        //check bit (i-1) of data_shift
 	MOVLW       1
 	SUBWF       R5, 0 
 	MOVWF       R0 
@@ -2808,14 +2767,14 @@ L__Shift_data192:
 	MOVLW       0
 	MOVWF       R1 
 	MOVF        R2, 0 
-L__Shift_data193:
-	BZ          L__Shift_data194
+L__Shift_data195:
+	BZ          L__Shift_data196
 	RLCF        R0, 1 
 	BCF         R0, 0 
 	RLCF        R1, 1 
 	ADDLW       255
-	GOTO        L__Shift_data193
-L__Shift_data194:
+	GOTO        L__Shift_data195
+L__Shift_data196:
 	MOVF        R3, 0 
 	ANDWF       R0, 1 
 	MOVF        R4, 0 
@@ -2823,20 +2782,20 @@ L__Shift_data194:
 	MOVF        R0, 0 
 	IORWF       R1, 0 
 	BTFSC       STATUS+0, 2 
-	GOTO        L_Shift_data145
+	GOTO        L_Shift_data148
 	MOVLW       1
 	MOVWF       R0 
-	GOTO        L_Shift_data144
-L_Shift_data145:
+	GOTO        L_Shift_data147
+L_Shift_data148:
 	CLRF        R0 
-L_Shift_data144:
+L_Shift_data147:
 	BTFSC       R0, 0 
-	GOTO        L__Shift_data195
+	GOTO        L__Shift_data197
 	BCF         RC5_bit+0, 5 
-	GOTO        L__Shift_data196
-L__Shift_data195:
+	GOTO        L__Shift_data198
+L__Shift_data197:
 	BSF         RC5_bit+0, 5 
-L__Shift_data196:
+L__Shift_data198:
 ;main.c,15 :: 		SH_CP = 1;
 	BSF         RD2_bit+0, 2 
 ;main.c,16 :: 		delay_ms(1);
@@ -2844,11 +2803,11 @@ L__Shift_data196:
 	MOVWF       R12, 0
 	MOVLW       151
 	MOVWF       R13, 0
-L_Shift_data146:
+L_Shift_data149:
 	DECFSZ      R13, 1, 1
-	BRA         L_Shift_data146
+	BRA         L_Shift_data149
 	DECFSZ      R12, 1, 1
-	BRA         L_Shift_data146
+	BRA         L_Shift_data149
 	NOP
 	NOP
 ;main.c,17 :: 		SH_CP = 0;
@@ -2858,11 +2817,11 @@ L_Shift_data146:
 	MOVWF       R12, 0
 	MOVLW       151
 	MOVWF       R13, 0
-L_Shift_data147:
+L_Shift_data150:
 	DECFSZ      R13, 1, 1
-	BRA         L_Shift_data147
+	BRA         L_Shift_data150
 	DECFSZ      R12, 1, 1
-	BRA         L_Shift_data147
+	BRA         L_Shift_data150
 	NOP
 	NOP
 ;main.c,11 :: 		for(i=8;i>=1;i--)
@@ -2871,8 +2830,8 @@ L_Shift_data147:
 	MOVLW       0
 	SUBWFB      R6, 1 
 ;main.c,19 :: 		}
-	GOTO        L_Shift_data141
-L_Shift_data142:
+	GOTO        L_Shift_data144
+L_Shift_data145:
 ;main.c,20 :: 		}
 	RETURN      0
 ; end of _Shift_data
@@ -2880,62 +2839,62 @@ L_Shift_data142:
 _main:
 
 ;main.c,21 :: 		void main() {
-;main.c,25 :: 		float Vs = 0.302;
+;main.c,26 :: 		float Vs = 0.0755;
 	MOVLW       190
 	MOVWF       main_Vs_L0+0 
 	MOVLW       159
 	MOVWF       main_Vs_L0+1 
 	MOVLW       26
 	MOVWF       main_Vs_L0+2 
-	MOVLW       125
+	MOVLW       123
 	MOVWF       main_Vs_L0+3 
-;main.c,29 :: 		CCP1CON = 0x00;
+;main.c,31 :: 		CCP1CON = 0x00;
 	CLRF        CCP1CON+0 
-;main.c,30 :: 		CCP2CON = 0x00;
+;main.c,32 :: 		CCP2CON = 0x00;
 	CLRF        CCP2CON+0 
-;main.c,31 :: 		ADCON0 = 0x00;
+;main.c,33 :: 		ADCON0 = 0x00;
 	CLRF        ADCON0+0 
-;main.c,32 :: 		ADCON1 = 0b00001110;        // configure RA0 & RA1 pins as analog
+;main.c,34 :: 		ADCON1 = 0b00001110;        // configure RA0 & RA1 pins as analog
 	MOVLW       14
 	MOVWF       ADCON1+0 
-;main.c,33 :: 		TRISA  = 0b00000001;        // configure RAO & RA1 pins as inputs
+;main.c,35 :: 		TRISA  = 0b00000001;        // configure RAO & RA1 pins as inputs
 	MOVLW       1
 	MOVWF       TRISA+0 
-;main.c,34 :: 		PORTA = 0;
+;main.c,36 :: 		PORTA = 0;
 	CLRF        PORTA+0 
-;main.c,35 :: 		delay_ms(500);
+;main.c,37 :: 		delay_ms(500);
 	MOVLW       6
 	MOVWF       R11, 0
 	MOVLW       19
 	MOVWF       R12, 0
 	MOVLW       173
 	MOVWF       R13, 0
-L_main148:
+L_main151:
 	DECFSZ      R13, 1, 1
-	BRA         L_main148
+	BRA         L_main151
 	DECFSZ      R12, 1, 1
-	BRA         L_main148
+	BRA         L_main151
 	DECFSZ      R11, 1, 1
-	BRA         L_main148
+	BRA         L_main151
 	NOP
 	NOP
-;main.c,36 :: 		TRISE = 0;
+;main.c,38 :: 		TRISE = 0;
 	CLRF        TRISE+0 
-;main.c,37 :: 		TRISB = 0;
+;main.c,39 :: 		TRISB = 0;
 	CLRF        TRISB+0 
-;main.c,38 :: 		TRISD = 0;
+;main.c,40 :: 		TRISD = 0;
 	CLRF        TRISD+0 
-;main.c,39 :: 		TRISC = 0;
+;main.c,41 :: 		TRISC = 0;
 	CLRF        TRISC+0 
-;main.c,40 :: 		PORTA = 0xFF;
+;main.c,42 :: 		PORTA = 0xFF;
 	MOVLW       255
 	MOVWF       PORTA+0 
-;main.c,42 :: 		GLCD_INIT();
+;main.c,44 :: 		GLCD_INIT();
 	CALL        _GLCD_INIT+0, 0
-;main.c,43 :: 		GLCD_FILL(WHITE);
+;main.c,45 :: 		GLCD_FILL(WHITE);
 	CLRF        FARG_GLCD_FILL_black_white+0 
 	CALL        _GLCD_FILL+0, 0
-;main.c,44 :: 		GLCD_OUT_STR(0,0,"Value = ",BLACK);
+;main.c,46 :: 		GLCD_OUT_STR(0,0,"ADC Value",BLACK);
 	CLRF        FARG_GLCD_OUT_STR_glcd_x+0 
 	CLRF        FARG_GLCD_OUT_STR_glcd_y+0 
 	MOVLW       ?lstr1_main+0
@@ -2945,7 +2904,7 @@ L_main148:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,45 :: 		GLCD_OUT_STR(0,10,"Voltage = ",BLACK);
+;main.c,47 :: 		GLCD_OUT_STR(0,10,"Voltage",BLACK);
 	CLRF        FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       10
 	MOVWF       FARG_GLCD_OUT_STR_glcd_y+0 
@@ -2956,8 +2915,8 @@ L_main148:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,46 :: 		GLCD_OUT_STR(95,10,"V",BLACK);
-	MOVLW       95
+;main.c,48 :: 		GLCD_OUT_STR(96,10,"V",BLACK);
+	MOVLW       96
 	MOVWF       FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       10
 	MOVWF       FARG_GLCD_OUT_STR_glcd_y+0 
@@ -2968,7 +2927,7 @@ L_main148:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,47 :: 		GLCD_OUT_STR(0,20,"S = ",BLACK);
+;main.c,49 :: 		GLCD_OUT_STR(0,20,"Conduct.",BLACK);
 	CLRF        FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       20
 	MOVWF       FARG_GLCD_OUT_STR_glcd_y+0 
@@ -2979,8 +2938,8 @@ L_main148:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,48 :: 		GLCD_OUT_STR(95,20,"mS/cm",BLACK);
-	MOVLW       95
+;main.c,50 :: 		GLCD_OUT_STR(96,20,"uS/cm",BLACK);
+	MOVLW       96
 	MOVWF       FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       20
 	MOVWF       FARG_GLCD_OUT_STR_glcd_y+0 
@@ -2991,42 +2950,42 @@ L_main148:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,49 :: 		GLCD_DISPLAY();
+;main.c,51 :: 		GLCD_DISPLAY();
 	CALL        _GLCD_DISPLAY+0, 0
-;main.c,59 :: 		Shift_data(0);
+;main.c,61 :: 		Shift_data(0);
 	CLRF        FARG_Shift_data_index+0 
 	CLRF        FARG_Shift_data_index+1 
 	CALL        _Shift_data+0, 0
-;main.c,60 :: 		ST_CP = 1;
+;main.c,62 :: 		ST_CP = 1;
 	BSF         RD3_bit+0, 3 
-;main.c,61 :: 		delay_ms(1);
+;main.c,63 :: 		delay_ms(1);
 	MOVLW       3
 	MOVWF       R12, 0
 	MOVLW       151
 	MOVWF       R13, 0
-L_main149:
+L_main152:
 	DECFSZ      R13, 1, 1
-	BRA         L_main149
+	BRA         L_main152
 	DECFSZ      R12, 1, 1
-	BRA         L_main149
+	BRA         L_main152
 	NOP
 	NOP
-;main.c,62 :: 		ST_CP = 0;
+;main.c,64 :: 		ST_CP = 0;
 	BCF         RD3_bit+0, 3 
-;main.c,64 :: 		while(1)
-L_main150:
-;main.c,66 :: 		temp_res = ADC_Read(0);   // Get results of AD conversion
+;main.c,66 :: 		while(1)
+L_main153:
+;main.c,68 :: 		temp_res = ADC_Read(0);   // Get results of AD conversion
 	CLRF        FARG_ADC_Read_channel+0 
 	CALL        _ADC_Read+0, 0
 	MOVF        R0, 0 
 	MOVWF       main_temp_res_L0+0 
 	MOVF        R1, 0 
 	MOVWF       main_temp_res_L0+1 
-;main.c,67 :: 		Vo = (float)5/1024*temp_res;
+;main.c,69 :: 		Vo = (float)5/1023*temp_res;
 	CALL        _Word2Double+0, 0
-	MOVLW       0
+	MOVLW       10
 	MOVWF       R4 
-	MOVLW       0
+	MOVLW       40
 	MOVWF       R5 
 	MOVLW       32
 	MOVWF       R6 
@@ -3041,7 +3000,25 @@ L_main150:
 	MOVWF       main_Vo_L0+2 
 	MOVF        R3, 0 
 	MOVWF       main_Vo_L0+3 
-;main.c,68 :: 		So = Vo / Vs;
+;main.c,70 :: 		V1 = (float)Vo/0.4125;
+	MOVLW       51
+	MOVWF       R4 
+	MOVLW       51
+	MOVWF       R5 
+	MOVLW       83
+	MOVWF       R6 
+	MOVLW       125
+	MOVWF       R7 
+	CALL        _Div_32x32_FP+0, 0
+	MOVF        R0, 0 
+	MOVWF       main_V1_L0+0 
+	MOVF        R1, 0 
+	MOVWF       main_V1_L0+1 
+	MOVF        R2, 0 
+	MOVWF       main_V1_L0+2 
+	MOVF        R3, 0 
+	MOVWF       main_V1_L0+3 
+;main.c,71 :: 		So = Vo / Vs;
 	MOVF        main_Vs_L0+0, 0 
 	MOVWF       R4 
 	MOVF        main_Vs_L0+1, 0 
@@ -3050,6 +3027,14 @@ L_main150:
 	MOVWF       R6 
 	MOVF        main_Vs_L0+3, 0 
 	MOVWF       R7 
+	MOVF        main_Vo_L0+0, 0 
+	MOVWF       R0 
+	MOVF        main_Vo_L0+1, 0 
+	MOVWF       R1 
+	MOVF        main_Vo_L0+2, 0 
+	MOVWF       R2 
+	MOVF        main_Vo_L0+3, 0 
+	MOVWF       R3 
 	CALL        _Div_32x32_FP+0, 0
 	MOVF        R0, 0 
 	MOVWF       main_So_L0+0 
@@ -3059,7 +3044,7 @@ L_main150:
 	MOVWF       main_So_L0+2 
 	MOVF        R3, 0 
 	MOVWF       main_So_L0+3 
-;main.c,71 :: 		sprintf(txt_Vo,"%2.4f",Vo);
+;main.c,74 :: 		sprintf(txt_Vo,"%2.4f",Vo);
 	MOVLW       main_txt_Vo_L0+0
 	MOVWF       FARG_sprintf_wh+0 
 	MOVLW       hi_addr(main_txt_Vo_L0+0)
@@ -3079,16 +3064,36 @@ L_main150:
 	MOVF        main_Vo_L0+3, 0 
 	MOVWF       FARG_sprintf_wh+8 
 	CALL        _sprintf+0, 0
-;main.c,72 :: 		sprintf(txt_So,"%2.4f",So);
-	MOVLW       main_txt_So_L0+0
+;main.c,75 :: 		sprintf(txt_V1,"%2.4f",V1);
+	MOVLW       main_txt_V1_L0+0
 	MOVWF       FARG_sprintf_wh+0 
-	MOVLW       hi_addr(main_txt_So_L0+0)
+	MOVLW       hi_addr(main_txt_V1_L0+0)
 	MOVWF       FARG_sprintf_wh+1 
 	MOVLW       ?lstr_7_main+0
 	MOVWF       FARG_sprintf_f+0 
 	MOVLW       hi_addr(?lstr_7_main+0)
 	MOVWF       FARG_sprintf_f+1 
 	MOVLW       higher_addr(?lstr_7_main+0)
+	MOVWF       FARG_sprintf_f+2 
+	MOVF        main_V1_L0+0, 0 
+	MOVWF       FARG_sprintf_wh+5 
+	MOVF        main_V1_L0+1, 0 
+	MOVWF       FARG_sprintf_wh+6 
+	MOVF        main_V1_L0+2, 0 
+	MOVWF       FARG_sprintf_wh+7 
+	MOVF        main_V1_L0+3, 0 
+	MOVWF       FARG_sprintf_wh+8 
+	CALL        _sprintf+0, 0
+;main.c,76 :: 		sprintf(txt_So,"%2.4f",So);
+	MOVLW       main_txt_So_L0+0
+	MOVWF       FARG_sprintf_wh+0 
+	MOVLW       hi_addr(main_txt_So_L0+0)
+	MOVWF       FARG_sprintf_wh+1 
+	MOVLW       ?lstr_8_main+0
+	MOVWF       FARG_sprintf_f+0 
+	MOVLW       hi_addr(?lstr_8_main+0)
+	MOVWF       FARG_sprintf_f+1 
+	MOVLW       higher_addr(?lstr_8_main+0)
 	MOVWF       FARG_sprintf_f+2 
 	MOVF        main_So_L0+0, 0 
 	MOVWF       FARG_sprintf_wh+5 
@@ -3099,7 +3104,7 @@ L_main150:
 	MOVF        main_So_L0+3, 0 
 	MOVWF       FARG_sprintf_wh+8 
 	CALL        _sprintf+0, 0
-;main.c,73 :: 		GLCD_OUT_DEC(60, 0 ,temp_res ,4, BLACK);
+;main.c,77 :: 		GLCD_OUT_DEC(60, 0 ,temp_res ,4, BLACK);
 	MOVLW       60
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_x+0 
 	CLRF        FARG_GLCD_OUT_DEC_glcd_y+0 
@@ -3115,19 +3120,19 @@ L_main150:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_DEC_black_white+0 
 	CALL        _GLCD_OUT_DEC+0, 0
-;main.c,76 :: 		GLCD_OUT_STR(60, 10 ,txt_Vo, BLACK);
+;main.c,80 :: 		GLCD_OUT_STR(60, 10 ,txt_V1, BLACK);
 	MOVLW       60
 	MOVWF       FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       10
 	MOVWF       FARG_GLCD_OUT_STR_glcd_y+0 
-	MOVLW       main_txt_Vo_L0+0
+	MOVLW       main_txt_V1_L0+0
 	MOVWF       FARG_GLCD_OUT_STR_glcd_str+0 
-	MOVLW       hi_addr(main_txt_Vo_L0+0)
+	MOVLW       hi_addr(main_txt_V1_L0+0)
 	MOVWF       FARG_GLCD_OUT_STR_glcd_str+1 
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,77 :: 		GLCD_OUT_STR(60, 20 ,txt_So, BLACK);
+;main.c,81 :: 		GLCD_OUT_STR(60, 20 ,txt_So, BLACK);
 	MOVLW       60
 	MOVWF       FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       20
@@ -3139,25 +3144,25 @@ L_main150:
 	MOVLW       1
 	MOVWF       FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,78 :: 		GLCD_DISPLAY();
+;main.c,82 :: 		GLCD_DISPLAY();
 	CALL        _GLCD_DISPLAY+0, 0
-;main.c,79 :: 		delay_ms(1000);
+;main.c,83 :: 		delay_ms(1000);
 	MOVLW       11
 	MOVWF       R11, 0
 	MOVLW       38
 	MOVWF       R12, 0
 	MOVLW       93
 	MOVWF       R13, 0
-L_main152:
+L_main155:
 	DECFSZ      R13, 1, 1
-	BRA         L_main152
+	BRA         L_main155
 	DECFSZ      R12, 1, 1
-	BRA         L_main152
+	BRA         L_main155
 	DECFSZ      R11, 1, 1
-	BRA         L_main152
+	BRA         L_main155
 	NOP
 	NOP
-;main.c,80 :: 		GLCD_OUT_DEC(60, 0 ,temp_res ,4, WHITE);
+;main.c,84 :: 		GLCD_OUT_DEC(60, 0 ,temp_res ,4, WHITE);
 	MOVLW       60
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_x+0 
 	CLRF        FARG_GLCD_OUT_DEC_glcd_y+0 
@@ -3172,7 +3177,7 @@ L_main152:
 	MOVWF       FARG_GLCD_OUT_DEC_glcd_length+0 
 	CLRF        FARG_GLCD_OUT_DEC_black_white+0 
 	CALL        _GLCD_OUT_DEC+0, 0
-;main.c,81 :: 		GLCD_OUT_STR(60, 10 ,txt_Vo,WHITE);
+;main.c,85 :: 		GLCD_OUT_STR(60, 10 ,txt_Vo,WHITE);
 	MOVLW       60
 	MOVWF       FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       10
@@ -3183,7 +3188,7 @@ L_main152:
 	MOVWF       FARG_GLCD_OUT_STR_glcd_str+1 
 	CLRF        FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,82 :: 		GLCD_OUT_STR(60, 20 ,txt_So,WHITE);
+;main.c,86 :: 		GLCD_OUT_STR(60, 20 ,txt_So,WHITE);
 	MOVLW       60
 	MOVWF       FARG_GLCD_OUT_STR_glcd_x+0 
 	MOVLW       20
@@ -3194,8 +3199,8 @@ L_main152:
 	MOVWF       FARG_GLCD_OUT_STR_glcd_str+1 
 	CLRF        FARG_GLCD_OUT_STR_black_white+0 
 	CALL        _GLCD_OUT_STR+0, 0
-;main.c,98 :: 		}
-	GOTO        L_main150
-;main.c,100 :: 		}
+;main.c,102 :: 		}
+	GOTO        L_main153
+;main.c,104 :: 		}
 	GOTO        $+0
 ; end of _main
