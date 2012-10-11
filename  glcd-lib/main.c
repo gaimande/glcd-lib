@@ -1,4 +1,4 @@
-#include "C:\Users\Jo\Desktop\GLCD_Jo.h"
+#include "glcd_PIC.h"
 const code char truck_bmp[1024];
 sbit DAT at RC5_bit;
 sbit SH_CP at RD2_bit;
@@ -7,23 +7,25 @@ const unsigned int mode[] = {0b01011011};
 
 void Shift_data(unsigned int index)
 {
-	unsigned int  data_shift,i;
-	for(i=8;i>=1;i--)
+        unsigned int  data_shift,i;
+        for(i=8;i>=1;i--)
    {
-		data_shift = mode[index];   //   (In & (1<<BitNo)) && 1
-		DAT = (data_shift & (1 << (i-1))) && 1;	//check bit (i-1) of data_shift
-		SH_CP = 1;
-		delay_ms(1);
-		SH_CP = 0;
-		delay_ms(1);
+                data_shift = mode[index];   //   (In & (1<<BitNo)) && 1
+                DAT = (data_shift & (1 << (i-1))) && 1;        //check bit (i-1) of data_shift
+                SH_CP = 1;
+                delay_ms(1);
+                SH_CP = 0;
+                delay_ms(1);
    }
 }
 void main() {
         unsigned int temp_res;
         char txt_Vo[15];
+        char txt_V1[15];
         char txt_So[15];
         float Vs = 0.0755;
         float Vo;
+        float V1;
         float So;
 
         CCP1CON = 0x00;
@@ -41,39 +43,41 @@ void main() {
 
         GLCD_INIT();
         GLCD_FILL(WHITE);
-        GLCD_OUT_STR(0,0,"Value = ",BLACK);
-        GLCD_OUT_STR(0,10,"Voltage = ",BLACK);
-        GLCD_OUT_STR(95,10,"V",BLACK);
-        GLCD_OUT_STR(0,20,"S = ",BLACK);
-        GLCD_OUT_STR(95,20,"mS/cm",BLACK);
+        GLCD_OUT_STR(0,0,"ADC Value",BLACK);
+        GLCD_OUT_STR(0,10,"Voltage",BLACK);
+        GLCD_OUT_STR(96,10,"V",BLACK);
+        GLCD_OUT_STR(0,20,"Conduct.",BLACK);
+        GLCD_OUT_STR(96,20,"uS/cm",BLACK);
         GLCD_DISPLAY();
-		//Bom vao
-		/*
-		Shift_data(0);
-		ST_CP = 1;
-		delay_ms(1);
-		ST_CP = 0;
-		delay_ms(10000);
+                //Bom vao
+                /*
+                Shift_data(0);
+                ST_CP = 1;
+                delay_ms(1);
+                ST_CP = 0;
+                delay_ms(10000);
                   */
-		//Khuay
-		Shift_data(0);
-		ST_CP = 1;
-		delay_ms(1);
-		ST_CP = 0;
+                //Khuay
+                Shift_data(0);
+                ST_CP = 1;
+                delay_ms(1);
+                ST_CP = 0;
         //while(1);
         while(1)
         {
               temp_res = ADC_Read(0);   // Get results of AD conversion
-              Vo = (float)5/1024*temp_res;
+              Vo = (float)5/1023*temp_res;
+              V1 = (float)Vo/0.4125;
               So = Vo / Vs;
               //FloatToStr(Vo, txt_Vo);
               //FloatToStr(So, txt_So);
               sprintf(txt_Vo,"%2.4f",Vo);
+              sprintf(txt_V1,"%2.4f",V1);
               sprintf(txt_So,"%2.4f",So);
               GLCD_OUT_DEC(60, 0 ,temp_res ,4, BLACK);
               //GLCD_OUT_STR_LEN(60, 10 ,txt_Vo, 5, BLACK);
               //GLCD_OUT_STR_LEN(60, 20 ,txt_So, 5, BLACK);
-              GLCD_OUT_STR(60, 10 ,txt_Vo, BLACK);
+              GLCD_OUT_STR(60, 10 ,txt_V1, BLACK);
               GLCD_OUT_STR(60, 20 ,txt_So, BLACK);
               GLCD_DISPLAY();
               delay_ms(1000);
