@@ -65,6 +65,12 @@ void main() {
         //while(1);
         while(1)
         {
+              GLCD_FILL(WHITE);
+              GLCD_OUT_STR(0,0,"ADC Value",BLACK);
+              GLCD_OUT_STR(0,10,"Voltage",BLACK);
+              GLCD_OUT_STR(96,10,"V",BLACK);
+              GLCD_OUT_STR(0,20,"Conduct.",BLACK);
+              GLCD_OUT_STR(96,20,"uS/cm",BLACK);
               temp_res = ADC_Read(0);   // Get results of AD conversion
               Vo = (float)5/1023*temp_res;
               V1 = (float)Vo/0.4125;
@@ -75,15 +81,14 @@ void main() {
               sprintf(txt_V1,"%2.4f",V1);
               sprintf(txt_So,"%2.4f",So);
               GLCD_OUT_DEC(60, 0 ,temp_res ,4, BLACK);
-              //GLCD_OUT_STR_LEN(60, 10 ,txt_Vo, 5, BLACK);
-              //GLCD_OUT_STR_LEN(60, 20 ,txt_So, 5, BLACK);
               GLCD_OUT_STR(60, 10 ,txt_V1, BLACK);
               GLCD_OUT_STR(60, 20 ,txt_So, BLACK);
               GLCD_DISPLAY();
               delay_ms(1000);
-              GLCD_OUT_DEC(60, 0 ,temp_res ,4, WHITE);
-              GLCD_OUT_STR(60, 10 ,txt_Vo,WHITE);
-              GLCD_OUT_STR(60, 20 ,txt_So,WHITE);
+              //GLCD_OUT_DEC(60, 0 ,temp_res ,4, WHITE);
+              //GLCD_OUT_STR(60, 10 ,txt_V1,WHITE);
+              //GLCD_OUT_STR(60, 20 ,txt_So,WHITE);
+              //delay_ms(500);
               //GLCD_OUT_STR_LEN(60, 10 ,txt_Vo, 5,WHITE);
               //GLCD_OUT_STR_LEN(60, 10 ,txt_Vo, 5,WHITE);
               /* 

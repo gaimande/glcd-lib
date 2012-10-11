@@ -273,6 +273,7 @@ void GLCD_OUT_CMD(unsigned char glcd_cmd)
         GLCD_DataPort = glcd_cmd;
         GLCD_DataPort = glcd_cmd;
         GLCD_DataPort = glcd_cmd;
+		GLCD_DataPort = glcd_cmd;
         GLCD_EN = 0;         //lcd 'E' pin low
 }
 
@@ -284,6 +285,7 @@ void GLCD_OUT_DATA(unsigned char glcd_data)
         GLCD_DataPort = glcd_data;
         GLCD_DataPort = glcd_data;
         GLCD_DataPort = glcd_data;
+		GLCD_DataPort = glcd_data;
         GLCD_EN = 0;         //lcd 'E' pin low
 }
 
